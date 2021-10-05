@@ -80,7 +80,7 @@ DATABASES = {
     #    'NAME': BASE_DIR / 'db.sqlite3',
     # },
       'default': {
-        'ENGINE': 'mssql',
+        'ENGINE': 'sql_server.pyodbc',
         'NAME': 'apex',
         'USER': 'sa',
         'PASSWORD': '123456',
@@ -89,6 +89,16 @@ DATABASES = {
         'OPTIONS': {'driver': 'SQL Server Native Client 11.0', 
         },
     },
+    # 'default': {
+    #     'ENGINE': 'mssql',
+    #     'NAME': 'apex',
+    #     'USER': 'sa',
+    #     'PASSWORD': '123456',
+    #     'HOST': 'SHADMAN',
+    #     'PORT': '',
+    #     'OPTIONS': {'driver': 'SQL Server Native Client 11.0',
+    #                 },
+    # },
 }
 
 

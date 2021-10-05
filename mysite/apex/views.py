@@ -57,7 +57,6 @@ def gender(request):
                    )
 
 
-
     except TblCatalog.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'apex/index.html', {'collections': '', 'gender':gender_list, 'categories': category_list})
