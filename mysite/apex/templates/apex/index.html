@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{%if gender %}
+    {% for g in gender %}
+        gender : {{g.gender}}
+    {% endfor %}
+
+{% endif %}
+
+{%if categories %}
+    {% for item in categories %}
+        Category : {{item.category}}
+    {% endfor %}
+
+{% endif %}
+{% if collections %}
+    <ul>
+    {% for collection in collections %}
+
+        <li>
+            Gender:{{collection.gender}}
+
+            <a href="/apex/{{ collection.sl }}">{{ collection.art_no }}</a>
+            -----
+        <a href="/apex/{{ collection.sl }}/cart">{{ collection.art_no }} Go to Cart</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p></p>
+{% endif %}
+</body>
+</html>
