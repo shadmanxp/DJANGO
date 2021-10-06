@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+    <title>Apex Catalogue</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</head>
+<body>
+<!--{%if gender %}-->
+<!--    {% for g in gender %}-->
+<!--        gender : {{g.gender}}-->
+<!--    {% endfor %}-->
+
+<!--{% endif %}-->
+
+<!--{%if categories %}-->
+<!--    {% for item in categories %}-->
+<!--        Category : {{item.category}}-->
+<!--    {% endfor %}-->
+<!--{% endif %}-->
+
+<!--{% if collections %}-->
+<!--    <ul>-->
+<!--    {% for collection in collections %}-->
+
+<!--        <li>-->
+<!--            Gender:{{collection.gender}}-->
+
+<!--            <a href="/apex/{{ collection.sl }}">{{ collection.art_no }}</a>-->
+<!--            -&#45;&#45;&#45;&#45;-->
+<!--        <a href="/apex/{{ collection.sl }}/cart">{{ collection.art_no }} Go to Cart</a>-->
+<!--        </li>-->
+<!--    {% endfor %}-->
+<!--    </ul>-->
+<!--{% else %}-->
+<!--    <p></p>-->
+<!--{% endif %}-->
+<div class="container-fluid">
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Apex Collections</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="d-flex">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            {% if gender %}
+            {% for g in gender %}
+             <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/{{ g.gender }}">{{ g.gender }}</a>
+             </li>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
