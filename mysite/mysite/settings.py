@@ -26,8 +26,10 @@ SECRET_KEY = 'django-insecure-uvuk&as(t4eae5j!o!=$@2vd)j4r(vz(t*szoegc=yh)3t$!55
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok.io']
+ALLOWED_HOSTS=['*']
+#pip install pyngrok
+#grok http 8000
 
 # Application definition
 
@@ -39,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apex.apps.ApexConfig',
+    'django_bootstrap_icons',
+    'svg',
+
 ]
 
 MIDDLEWARE = [
@@ -143,6 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+# SVG_DIRS=[
+#     os.path.join(BASE_DIR, 'static/icons'),
+# ] ##add if svg library used
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

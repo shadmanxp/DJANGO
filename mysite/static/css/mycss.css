@@ -1,0 +1,16 @@
+.category_feature{
+  transition: all 0.3s ease-in-out;
+}
+
+.category_feature:hover {
+  transform: scale(1.3);
+}
+
+.card_selection{
+  transition: all 0.3s ease-in-out;
+  opacity: 0.0;
+}
+.card_selection:hover {
+  transform: scale(1.3);
+  opacity:0.8
+}

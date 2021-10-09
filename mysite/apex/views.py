@@ -1,31 +1,111 @@
 from django.shortcuts import render
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse, Http404
 from django.template import loader
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q, FilteredRelation, F
+import random
 
 # from django.conf.urls.static import static
 
 from .models import TblCatalog
 
+
+# def NEWID():
+#     filter_amount = 6
+#     sl = (TblCatalog.objects
+#           .values('art_no')
+#           .annotate(art_count=Count('art_no'))
+#           )
+#     #SELECT [tbl_catalog].[ART_NO], COUNT_BIG([tbl_catalog].[ART_NO]) AS [art_count] FROM [tbl_catalog] GROUP BY [tbl_catalog].[ART_NO]
+#     sl_list = list(sl)
+#     random_no = random.sample(sl_list, filter_amount)
+#     return random_no
+def get_collections():
+    collections = TblCatalog.objects.all()
+    return collections
+
+
+def get_gender_list():
+    gender_list = (TblCatalog.objects.values('gender')
+                   .order_by('-gender')
+                   .annotate(max_id=Max('gender'), count_id=Count('gender'))
+                   .filter(count_id__gt=1)
+                   )
+    return gender_list
+
+
+def get_featured_products():
+    ft_products = TblCatalog.objects.raw('select Cons.*,AC.art_count  FROM (SELECT  top 12 * FROM '
+                                         'tbl_catalog order by NEWID()) AS Cons left outer join (SELECT '
+                                         'art_no, count(art_no) art_count FROM tbl_catalog c GROUP BY art_no) AC on '
+                                         'Cons.art_no = AC.art_no')
+    return ft_products
+
+
+def get_gender_collection(gender):
+    query = "select Cons.*,AC.art_count  FROM (SELECT * FROM tbl_catalog) AS Cons left outer join (SELECT  art_no, count(art_no) art_count FROM tbl_catalog c GROUP BY art_no) AC on  Cons.art_no = AC.art_no where Cons.GENDER='"+gender+"'"
+    gender_collection = TblCatalog.objects.raw(query)
+    return gender_collection
+
+
 def index(request):
     try:
-        collections = TblCatalog.objects.order_by('-pd_sl')[:5]
-        gender_list = (TblCatalog.objects.values('gender')
-                       .order_by('gender')
-                       .annotate(max_id=Max('gender'), count_id=Count('gender'))
-                       .filter(count_id__gt=1)
-                       )
+        gender_list = get_gender_list()
+        ft_products = get_featured_products()
         template = loader.get_template('apex/index.html')
         context = {
+            'gender': gender_list,
+            'featured_products': ft_products,
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Question does not exist")
+    return HttpResponse(template.render(context, request))
 
-            'collections': collections,
-            'gender':gender_list
+    # featured_products = (TblCatalog.objects.all()
+    #                      .filter(Q(sl=NEWID()) | Q(sl=NEWID()) | Q(sl=NEWID()) | Q(sl=NEWID()) | Q(sl=NEWID()) )
+    #                      )
+    ####################################
+    # filter_amount = 6
+    # random_selected = (TblCatalog.objects
+    #       .values('art_no')
+    #       .annotate(art_count=Count('art_no'))
+    #       .order_by()
+    #       )
+    # random_selected_list = list(random_selected)
+    # random_no = random.sample(random_selected_list, filter_amount)
+    # selected_list_art_no = []
+    # selected_list_art_count = []
+    # for each in random_no:
+    #     selected_list_art_no.append(each.get('art_no'))
+    #     selected_list_art_count.append(each.get('art_count'))
+    #
+    # featured_products = (TblCatalog.objects.all()
+    #                      .filter(Q(art_no=selected_list_art_no[0]) |
+    #                              Q(art_no=selected_list_art_no[1]) |
+    #                              Q(art_no=selected_list_art_no[2]) |
+    #                              Q(art_no=selected_list_art_no[3]) |
+    #                              Q(art_no=selected_list_art_no[4]) |
+    #                              Q(art_no=selected_list_art_no[5])
+    #                              )
+    #                      .annotate(art_count=Count('art_no'))
+    #                      .order_by()
+    #                      )
+
+
+######################################################################################
+
+def details(request, gender):
+    try:
+        gender_list = get_gender_list()
+        gender_collection = get_gender_collection(gender)
+        template = loader.get_template('apex/details.html')
+        context = {
+            'gender': gender_list,
+            'gender_collection': gender_collection,
         }
 
     except TblCatalog.DoesNotExist:
         raise Http404("Question does not exist")
     return HttpResponse(template.render(context, request))
-
 
 # def detail(request, sl):
 #
@@ -51,8 +131,6 @@ def index(request):
 #     except TblCatalog.DoesNotExist:
 #         raise Http404("Question does not exist")
 #     return render(request, 'apex/index.html', {'collections': collection})
-
-
 
 # def gender(request):
 #     try:
