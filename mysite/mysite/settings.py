@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apex.apps.ApexConfig',
-    'django_bootstrap_icons',
-    'svg',
+    # 'django_bootstrap_icons',
+    # 'svg',
 
 ]
 
