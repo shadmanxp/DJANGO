@@ -34,16 +34,24 @@ def get_gender_list():
 
 
 def get_featured_products():
-    ft_products = TblCatalog.objects.raw('select Cons.*,AC.art_count  FROM (SELECT  top 12 * FROM '
-                                         'tbl_catalog order by NEWID()) AS Cons left outer join (SELECT '
-                                         'art_no, count(art_no) art_count FROM tbl_catalog c GROUP BY art_no) AC on '
-                                         'Cons.art_no = AC.art_no')
+    query = "SELECT  top 6  ROW_NUMBER() OVER ( ORDER BY c.gender,c.category,c.sl ) AS RowNum, * FROM tbl_catalog c WHERE sl = (SELECT MIN(sl) FROM tbl_catalog WHERE ART_NO = c.ART_NO) order by NEWID()"
+    query2 = "SELECT  RowConstrainedResult.*,n.COUNT_ART FROM ( SELECT  top 6  ROW_NUMBER() OVER ( ORDER BY c.gender," \
+            "c.category,c.sl ) AS RowNum, * FROM tbl_catalog c WHERE sl = (SELECT MIN(sl) FROM tbl_catalog WHERE " \
+            "ART_NO = c.ART_NO) order by NEWID()) AS RowConstrainedResult left outer join (SELECT ART_NO, " \
+            "count(ART_NO) COUNT_ART FROM tbl_catalog c GROUP BY ART_NO ) n on RowConstrainedResult.ART_NO=n.ART_NO "
+    ft_products = TblCatalog.objects.raw(query2)
     return ft_products
 
 
 def get_gender_collection(gender):
-    query = "select Cons.*,AC.art_count  FROM (SELECT * FROM tbl_catalog) AS Cons left outer join (SELECT  art_no, count(art_no) art_count FROM tbl_catalog c GROUP BY art_no) AC on  Cons.art_no = AC.art_no where Cons.GENDER='"+gender+"'"
-    gender_collection = TblCatalog.objects.raw(query)
+    query = "select Cons.*,AC.art_count  FROM (SELECT * FROM tbl_catalog) AS Cons left outer join (SELECT  art_no, " \
+            "count(art_no) art_count FROM tbl_catalog c GROUP BY art_no) AC on  Cons.art_no = AC.art_no where " \
+            "Cons.GENDER='" + gender + "' "
+    query2 = "SELECT  RowConstrainedResult.*,n.COUNT_ART FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY c.gender," \
+             "c.category,c.sl ) AS RowNum, * FROM tbl_catalog c WHERE c.gender='"+gender+"') AS RowConstrainedResult left " \
+             "outer join (SELECT ART_NO, count(ART_NO) COUNT_ART FROM tbl_catalog c WHERE c.gender='"+gender+"' GROUP BY " \
+             "ART_NO) n on RowConstrainedResult.ART_NO=n.ART_NO WHERE RowNum >= 0 AND RowNum < 100 ORDER BY RowNum "
+    gender_collection = TblCatalog.objects.raw(query2)
     return gender_collection
 
 
