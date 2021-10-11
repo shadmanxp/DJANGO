@@ -1,6 +1,7 @@
 import sys
 from math import ceil
 from django.db.models import Count, Max
+from django.core.paginator import Paginator
 from .models import TblCatalog
 
 
@@ -64,13 +65,25 @@ def get_category_collection(gender, category):
     return category_list
 
 
-def gender_collection_pagination(gender):
-    count = 0
-    page_count_list = []
+# def gender_collection_pagination(gender):
+#     count = 0
+#     page_count_list = []
+#     gender_collection = get_gender_collection(gender)
+#     for each in gender_collection:
+#         count = count + 1
+#     pages = ceil(count / 12)
+#     for each in range(1, pages + 1, 1):
+#         page_count_list.append(each)
+#     return page_count_list
+
+def get_gender_collection_pagination(gender):
     gender_collection = get_gender_collection(gender)
-    for each in gender_collection:
-        count = count + 1
-    pages = ceil(count / 12)
-    for each in range(1, pages + 1, 1):
-        page_count_list.append(each)
-    return page_count_list
+    collection = Paginator(gender_collection, 12)
+    return collection
+
+
+def get_category_collection_pagination(gender, category):
+    category_collection = get_category_collection(gender, category)
+    collection = Paginator(category_collection, 12)
+    return collection
+

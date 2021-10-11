@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .list_dal import *
+from django.core.paginator import Paginator
 # from django.conf.urls.static import static
 from .models import TblCatalog
 
@@ -19,20 +20,37 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def list(request, gender):
+def list(request, gender, page):
     try:
         gender_list = get_gender_list()
-        gender = gender
         category_list = get_category_list(gender)
-        gender_collection = get_gender_collection(gender)
+        # gender_collection = get_gender_collection(gender)
+        gender_collection_pagination = get_gender_collection_pagination(gender)
+        page_wise_gender_collection = gender_collection_pagination.page(page)
+        page_has_next = page_wise_gender_collection.has_next()
+        page_has_previous = page_wise_gender_collection.has_previous()
+        try:
+            page_next = page_wise_gender_collection.next_page_number()
+        except:
+            page_next = page
+        try:
+            page_previous = page_wise_gender_collection.previous_page_number()
+        except:
+            page_previous = 1
         template = loader.get_template('apex/list.html')
-        page_count_list = gender_collection_pagination(gender)
         context = {
             'gender_list': gender_list,
-            'gender_collection': gender_collection,
+            # 'gender_collection': gender_collection,
             'gender': gender,
             'category_list': category_list,
-            'page_count_list' : page_count_list,
+            'page_wise_gender_collection': page_wise_gender_collection,
+            'gender_collection_pagination': gender_collection_pagination,
+            'gender_current_page': int(page),
+            'gender_page_has_next': page_has_next,
+            'gender_page_has_previous': page_has_previous,
+            'gender_page_next': page_next,
+            'gender_page_previous': page_previous,
+
         }
 
     except TblCatalog.DoesNotExist:
@@ -40,18 +58,37 @@ def list(request, gender):
     return HttpResponse(template.render(context, request))
 
 
-def further_list(request, gender, category):
+def further_list(request, gender, category, page):
     try:
         gender_list = get_gender_list()
-        gender = gender
         category_list = get_category_list(gender)
-        category_collection = get_category_collection(gender, category)
+        # category_collection = get_category_collection(gender, category)
+        category_collection_pagination = get_category_collection_pagination(gender, category)
+        page_wise_category_collection = category_collection_pagination.page(page)
+        page_has_next = page_wise_category_collection.has_next()
+        page_has_previous = page_wise_category_collection.has_previous()
+        try:
+            page_next = page_wise_category_collection.next_page_number()
+        except:
+            page_next = page
+        try:
+            page_previous = page_wise_category_collection.previous_page_number()
+        except:
+            page_previous = 1
         template = loader.get_template('apex/list.html')
         context = {
             'gender_list': gender_list,
             'gender': gender,
+            'category': category,
             'category_list': category_list,
-            'category_collection': category_collection,
+            # 'category_collection': category_collection,
+            'page_wise_category_collection': page_wise_category_collection,
+            'category_collection_pagination': category_collection_pagination,
+            'category_current_page': int(page),
+            'category_page_has_next': page_has_next,
+            'category_page_has_previous': page_has_previous,
+            'category_page_next': page_next,
+            'category_page_previous': page_previous,
         }
 
     except TblCatalog.DoesNotExist:

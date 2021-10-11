@@ -41,7 +41,7 @@
             {% if gender_list %}
             {% for g in gender_list %}
             <div class="col-4 px-1" style="position:relative">
-                <a href="{{ g.gender }}">
+                <a href="{{ g.gender }}/pg=1">
                     <img class="col-12 img-fluid rounded-1" src="{% static 'img/' %}{{g.gender}}.jpg " alt="{{ g.gender }}" />
                     <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                         <div class="align-self-center category_feature">

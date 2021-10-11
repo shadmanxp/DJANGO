@@ -10,7 +10,7 @@
 {% include "./header.html" %}
 <div class="container-fluid pt-3">
     <div class="row">
-        <div class="col-lg-2 pe-0">
+        <div class="col-lg-2 pe-0" id="side_bar">
             <div class="navbar-light bg-light bg-white" >
                 <a class="navbar-brand fw-bold me-0 " href="#">
                     <span class="h2 text-muted ps-1">
@@ -25,7 +25,7 @@
                 {% if category_list %}
                     {% for cat in category_list %}
                           <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/{{gender}}/{{cat.category}}">
+                            <a class="nav-link active" aria-current="page" href="/{{gender}}/{{cat.category}}/pg=1">
                                 <span class="h6 fs-5 text-muted ps-3" style="text-transform: uppercase;"><i class="bi bi-caret-right-fill"></i> {{cat.category}}</span>
                             </a>
                           </li>
@@ -36,8 +36,8 @@
         </div>
         <div class="col-lg-10 ps-0 ">
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-lg-3 pb-3">
-              {%if gender_collection %}
-              {% for shoe in gender_collection %}
+              {%if page_wise_gender_collection %}
+              {% for shoe in page_wise_gender_collection %}
                 <div class="col">
                     <div class="card h-100">
                         <div class="p-2" style="position: relative">
@@ -80,8 +80,8 @@
                     </div>
                 </div>
               {% endfor %}
-              {% elif category_collection %}
-              {% for shoe in category_collection %}
+              {% elif  page_wise_category_collection %}
+              {% for shoe in  page_wise_category_collection %}
               <div class="col">
                 <div class="card h-100">
                     <div class="p-2" style="position: relative">
@@ -125,23 +125,75 @@
               {% endfor %}
               {% endif %}
             </div>
-            {% if page_count_list %}
-            <ul class="pagination pagination-lg justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                {% for numbers in page_count_list %}
-                    <li class="page-item"><a class="page-link" href="#">{{numbers}}</a></li>
-                    <li class="page-item">
-                {% endfor %}
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
+            {% if gender_collection_pagination %}
+                <ul class="pagination pagination-lg justify-content-center">
+                    {% if not gender_page_has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    {% elif gender_page_has_previous %}
+                     <li class="page-item">
+                        <a class="page-link" href="/{{gender}}/pg={{gender_page_previous}}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for pages in gender_collection_pagination.page_range %}
+                       {% if pages is gender_current_page %}
+                        <li class="page-item active">
+                            <a class="page-link" href="/{{gender}}/pg={{pages}}">{{pages}}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="/{{gender}}/pg={{pages}}">{{pages}}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not gender_page_has_next %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                    {% elif gender_page_has_next %}
+                     <li class="page-item">
+                        <a class="page-link" href="/{{gender}}/pg={{gender_page_next}}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+            {% if category_collection_pagination %}
+                <ul class="pagination pagination-lg justify-content-center">
+                    {% if not category_page_has_previous %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    {% elif category_page_has_previous %}
+                     <li class="page-item">
+                        <a class="page-link" href="/{{gender}}/{{category}}/pg={{category_page_previous}}">Previous</a>
+                    </li>
+                    {% endif %}
+                    {% for pages in category_collection_pagination.page_range %}
+                       {% if pages is category_current_page %}
+                        <li class="page-item active">
+                            <a class="page-link" href="/{{gender}}/{{category}}/pg={{pages}}">{{pages}}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="/{{gender}}/{{category}}/pg={{pages}}">{{pages}}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not category_page_has_next %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                    {% elif category_page_has_next %}
+                     <li class="page-item">
+                        <a class="page-link" href="/{{gender}}/{{category}}/pg={{category_page_next}}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
             {% endif %}
         </div>
     </div>
 </div>
-<p>{{page_count}}</p>
 {% include "./footer.html" %}
 </body>
 </html>
