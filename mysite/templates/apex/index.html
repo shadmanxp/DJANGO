@@ -4,53 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Apex Catalogue</title>
-            {% load static %}
-    <link rel="stylesheet" href="{% static 'css/mycss.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/all.css' %}" /> <!--font awesome css-->
-    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}" />
-    <link rel="stylesheet" href="{% static 'photoswipe/photoswipe.css' %}" />
-    <link rel="stylesheet" href="{% static 'photoswipe/default-skin/default-skin.css' %}" />
-    <link rel="stylesheet" href="{% static 'fonts/WorkSans-Regular.ttf' %}"  media="screen">
-<!--    <link rel="stylesheet" href="{% static 'icons/' %}" />-->
-<!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">-->
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">-->
-    <script src="{% static 'js/myjs.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/all.js' %}"></script>
-    <script src="{% static 'photoswipe/photoswipe.min.js' %}"></script>
-    <script src="{% static 'photoswipe/photoswipe-ui-default.min.js' %}"></script>
+    {% load static %}
 </head>
 <body >
-<!--{%if gender %}-->
-<!--    {% for g in gender %}-->
-<!--        gender : {{g.gender}}-->
-<!--    {% endfor %}-->
-
-<!--{% endif %}-->
-
-<!--{%if categories %}-->
-<!--    {% for item in categories %}-->
-<!--        Category : {{item.category}}-->
-<!--    {% endfor %}-->
-<!--{% endif %}-->
-
-<!--{% if collections %}-->
-<!--    <ul>-->
-<!--    {% for collection in collections %}-->
-
-<!--        <li>-->
-<!--            Gender:{{collection.gender}}-->
-
-<!--            <a href="/apex/{{ collection.sl }}">{{ collection.art_no }}</a>-->
-<!--            -&#45;&#45;&#45;&#45;-->
-<!--        <a href="/apex/{{ collection.sl }}/cart">{{ collection.art_no }} Go to Cart</a>-->
-<!--        </li>-->
-<!--    {% endfor %}-->
-<!--    </ul>-->
-<!--{% else %}-->
-<!--    <p></p>-->
-<!--{% endif %}-->
 {% include "./header.html" %}
 <div class="container-fluid p-0 m-0">
     <div class="container-fluid py-0 px-3 mt-3" style="position:relative">
@@ -82,10 +38,10 @@
     </div>
     <div class="container-fluid px-3 my-0">
         <div class="row m-0 p-0 ">
-            {% if gender %}
-            {% for g in gender %}
+            {% if gender_list %}
+            {% for g in gender_list %}
             <div class="col-4 px-1" style="position:relative">
-                <a href="/{{ g.gender }}">
+                <a href="{{ g.gender }}">
                     <img class="col-12 img-fluid rounded-1" src="{% static 'img/' %}{{g.gender}}.jpg " alt="{{ g.gender }}" />
                     <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                         <div class="align-self-center category_feature">

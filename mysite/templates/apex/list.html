@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{{gender}}</title>
+    {% load static %}
+</head>
+<body>
+{% include "./header.html" %}
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-lg-2 pe-0">
+            <div class="navbar-light bg-light bg-white" >
+                <a class="navbar-brand fw-bold me-0 " href="#">
+                    <span class="h2 text-muted ps-1">
+                        {% if gender == "MENS"  %} <i class="fas fa-male fa-sm"></i>
+                        {% elif gender == "KIDS" %} <i class="fas fa-child fa-sm"></i>
+                        {% elif gender == "WOMENS" %}<i class="fas fa-female fa-sm"></i>
+                        {% endif %}
+                        {{ gender }}
+                    </span>
+                </a>
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 pt-2">
+                {% if category_list %}
+                    {% for cat in category_list %}
+                          <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/{{gender}}/{{cat.category}}">
+                                <span class="h6 fs-5 text-muted ps-3" style="text-transform: uppercase;"><i class="bi bi-caret-right-fill"></i> {{cat.category}}</span>
+                            </a>
+                          </li>
+                    {% endfor %}
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-10 ps-0 ">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-lg-3 pb-3">
+              {%if gender_collection %}
+              {% for shoe in gender_collection %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="p-2" style="position: relative">
+                            <div>
+                            <a href="">
+                                <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
+                                <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
+                                    <div class="align-self-center card_selection">
+                                        <p class="display-6" style="color:#FFFFFF;">
+                                            <span class="rounded-1" style="background: rgb(255, 255, 255);padding: 3vw 3vw;color:rgb(0,0,0);font-size: 2vw;">
+                                                Details
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            </div>
+                        </div>
+                      <div class="card-body py-0">
+                        <h5 class="card-title h4 mb-2">{{shoe.art_no.strip }}</h5>
+                      </div>
+                      <ul class="list-group list-group-flush py=0">
+                          <li class="list-group-item"><span class="h6" style="font-size: 15px;">GENDER:</span> {{shoe.gender.strip }}</li>
+                          <li class="list-group-item"><span class="h6" style="font-size: 15px;">CATEGORY:</span> <span style="text-transform: uppercase;">{{shoe.category.strip }}</span></li>
+                          <li class="list-group-item">
+                                {%if shoe.art_count == 1 %}
+                                    <span class="h6">COLOR:</span>
+                                {% else %}
+                                    <span class="h6">COLORS:</span>
+                                {% endif %}
+                                {{shoe.art_count }}
+                          </li>
+                      </ul>
+                        <div class="card-body row text-end">
+                            <div class="col align-self-end">
+                                <a href="#" class="btn btn-secondary"><i class="bi bi-cart-plus"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+              {% endfor %}
+              {% elif category_collection %}
+              {% for shoe in category_collection %}
+              <div class="col">
+                <div class="card h-100">
+                    <div class="p-2" style="position: relative">
+                        <div>
+                        <a href="">
+                            <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
+                            <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
+                                <div class="align-self-center card_selection">
+                                    <p class="display-6" style="color:#FFFFFF;">
+                                        <span class="rounded-1" style="background: rgb(255, 255, 255);padding: 3vw 3vw;color:rgb(0,0,0);font-size: 2vw;">
+                                            Details
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                  <div class="card-body py-0">
+                    <h5 class="card-title h4 mb-2">{{shoe.art_no.strip }}</h5>
+                  </div>
+                  <ul class="list-group list-group-flush py=0">
+                      <li class="list-group-item"><span class="h6" style="font-size: 15px;">GENDER:</span> {{shoe.gender.strip }}</li>
+                      <li class="list-group-item"><span class="h6" style="font-size: 15px;">CATEGORY:</span> <span style="text-transform: uppercase;">{{shoe.category.strip }}</span></li>
+                      <li class="list-group-item">
+                            {%if shoe.art_count == 1 %}
+                                <span class="h6">COLOR:</span>
+                            {% else %}
+                                <span class="h6">COLORS:</span>
+                            {% endif %}
+                            {{shoe.art_count }}
+                      </li>
+                  </ul>
+                  <div class="card-body row text-end">
+                      <div class="col align-self-end">
+                          <a href="#" class="btn btn-secondary"><i class="bi bi-cart-plus"></i></a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% endif %}
+            </div>
+            {% if page_count_list %}
+            <ul class="pagination pagination-lg justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                {% for numbers in page_count_list %}
+                    <li class="page-item"><a class="page-link" href="#">{{numbers}}</a></li>
+                    <li class="page-item">
+                {% endfor %}
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<p>{{page_count}}</p>
+{% include "./footer.html" %}
+</body>
+</html>
