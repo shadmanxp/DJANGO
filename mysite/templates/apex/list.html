@@ -19,7 +19,7 @@
                     <div class="card h-100">
                         <div class="p-2" style="position: relative">
                             <div>
-                            <a href="/{{shoe.gender}}/{{shoe.category}}/a={{shoe.art_no}}&l={{shoe.leather_1}}">
+                            <a href="/{{shoe.gender}}/{{shoe.category}}/a={{shoe.art_no.strip}}&l={{shoe.leather_1.strip}}">
                                 <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
                                 <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                                     <div class="align-self-center card_selection">
@@ -64,7 +64,7 @@
                     <div class="p-2" style="position: relative">
                         <div>
                         <a href="/{{shoe.gender}}/{{shoe.category}}/a={{shoe.art_no}}&l={{shoe.leather_1}}">
-                            <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
+                            <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no.strip}}">
                             <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                                 <div class="align-self-center card_selection">
                                     <p class="display-6" style="color:#FFFFFF;">
@@ -102,8 +102,9 @@
               {% endfor %}
               {% endif %}
             </div>
+            <div class="row">
             {% if gender_collection_pagination %}
-                <ul class="pagination pagination-lg justify-content-center ">
+                <ul class="pagination justify-content-center">
                     {% if not gender_page_has_previous %}
                     <li class="page-item disabled">
                         <a class="page-link">Previous</a>
@@ -136,7 +137,7 @@
                 </ul>
             {% endif %}
             {% if category_collection_pagination %}
-                <ul class="pagination pagination-lg justify-content-center secondary">
+                <ul class="pagination justify-content-center secondary">
                     {% if not category_page_has_previous %}
                     <li class="page-item disabled">
                         <a class="page-link">Previous</a>
@@ -168,6 +169,7 @@
                     {% endif %}
                 </ul>
             {% endif %}
+            </div>
         </div>
     </div>
 </div>

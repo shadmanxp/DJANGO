@@ -8,11 +8,11 @@
 <body>
 <div class="col-lg-2 pe-0" id="side_bar">
     <div class="navbar-light bg-light bg-white" >
-        <a class="navbar-brand fw-bold me-0 " href="#">
+        <a class="navbar-brand fw-bold me-0 " href="/{{gender}}/pg=1">
             <span class="h2 text-muted ps-1">
-                {% if gender == "MENS"  %} <i class="fas fa-male fa-sm"></i>
-                {% elif gender == "KIDS" %} <i class="fas fa-child fa-sm"></i>
-                {% elif gender == "WOMENS" %}<i class="fas fa-female fa-sm"></i>
+                {% if gender.strip == "MENS"  %} <i class="fas fa-male fa-sm"></i>
+                {% elif gender.strip == "KIDS" %} <i class="fas fa-child fa-sm"></i>
+                {% elif gender.strip == "WOMENS" %}<i class="fas fa-female fa-sm"></i>
                 {% endif %}
                 {{ gender }}
             </span>

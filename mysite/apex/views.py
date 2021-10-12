@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 from .list_dal import *
 from .details_dal import *
+from .accounts_dal import *
 from django.core.paginator import Paginator
 # from django.conf.urls.static import static
 from .models import TblCatalog
@@ -113,8 +114,22 @@ def details(request, gender, category, art_no, leather_1):
             'art_no': art_no,
             'list_by_art_no': list_by_art_no,
             'product_details': product_details,
-            'color_count' : color_count,
+            'color_count': color_count,
             'range': range(0, 5, 1),
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Page not found")
+    return HttpResponse(template.render(context, request))
+
+
+def signup(request):
+    try:
+        gender_list = get_gender_list()
+        country_list = get_country_list()
+        template = loader.get_template('apex/accounts.html')
+        context = {
+            'gender_list': gender_list,
+            'country_list': country_list
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Page not found")

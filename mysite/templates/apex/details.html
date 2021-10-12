@@ -51,21 +51,21 @@
                             <div class="card-header">
                                 <div class="row row-cols-2 align-items-center">
                                     <h5 class="col text-center text-muted">{{detail.last}}</h5>
-                                    <h5 class="col text-muted text-center border-start">{{detail.art_no}}</h5>
+                                    <h5 class="col text-muted text-center border-start">{{detail.art_no.strip}}</h5>
                                 </div>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SIZE RANGE:</h6><p class="text-muted m-0 ps-2">{{detail.size}}</p>
+                                    <h6 class="text-muted m-0 h6">SIZE RANGE:</h6><p class="text-muted m-0 ps-2">{{detail.size.strip}}</p>
                                 </li>
                                 {% if detail.leather_1 %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LEATHER 1:</h6><p class="text-muted m-0 ps-2">{{detail.leather_1}}</p>
+                                    <h6 class="text-muted m-0 h6">LEATHER 1:</h6><p class="text-muted m-0 ps-2">{{detail.leather_1.strip}}</p>
                                 </li>
                                 {% endif %}
                                 {% if detail.leather_2 %}
                                  <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LEATHER 2:</h6><p class="text-muted m-0 ps-2">{{detail.leather_2}}</p>
+                                    <h6 class="text-muted m-0 h6">LEATHER 2:</h6><p class="text-muted m-0 ps-2">{{detail.leather_2.strip}}</p>
                                 </li>
                                 {% endif %}
                                 {% if detail.lining_1 %}
@@ -79,10 +79,10 @@
                                 </li>
                                 {% endif %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SOCKS:</h6><p class="text-muted m-0 ps-2">{{detail.socks_design}}</p>
+                                    <h6 class="text-muted m-0 h6">SOCKS:</h6><p class="text-muted m-0 ps-2">{{detail.socks_design.strip}}</p>
                                 </li>
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SOLE:</h6><p class="text-muted m-0 ps-2">{{detail.sole}}</p>
+                                    <h6 class="text-muted m-0 h6">SOLE:</h6><p class="text-muted m-0 ps-2">{{detail.sole.strip}}</p>
                                 </li>
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
                                     <h6 class="text-muted m-0 h6">NOTE:</h6><p class="text-muted m-0 ps-2"></p>

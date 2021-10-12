@@ -92,7 +92,7 @@ DATABASES = {
         'PASSWORD': '123456',
         'HOST': 'SHADMAN',
         'PORT': '',
-        'OPTIONS': {'driver': 'SQL Server Native Client 11.0', 
+        'OPTIONS': {'driver': 'SQL Server Native Client 11.0',
         },
     },
     # 'default': {

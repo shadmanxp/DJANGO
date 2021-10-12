@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% load static %}
+</head>
+<body>
+{% include "./header.html" %}
+    <div class="container-fluid pt-5 px-5">
+        <div class="col-12 d-flex justify-content-center px-3">
+        <form class="row g-3 p-3 shadow-lg rounded-2 p-3">
+            <div class="col-md-12 text-center mt-2">
+                <label class="form-label h4 mb-1 text-muted">SIGN UP</label>
+            </div>
+            <div class="col-md-12 mt-1">
+                 <label for="inputName" class="form-label h6">Full name</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Full name">
+            </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label h6">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="example@example.com">
+            </div>
+            <div class="col-md-6">
+                <label for="inputPassword4" class="form-label h6">Password</label>
+                <input type="password" class="form-control" id="inputPassword4" placeholder="Must be 8 character long">
+            </div>
+            <div class="col-md-12">
+                <label for="inputCompany" class="form-label h6">Company</label>
+                <input type="text" class="form-control" id="inputCompany" placeholder="Exact company name">
+            </div>
+            <div class="col-md-12">
+                <label for="inputCountry" class="form-label h6">State</label>
+                <select id="inputCountry" class="form-select">
+                    <option selected>Choose...</option>
+                    {% for country in country_list %}
+                        <option value="{{country}}">{{country}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </div>
+        </form>
+        </div>
+    </div>
+<div class="fixed-bottom">
+{% include "./footer.html" %}
+</div>
+</body>
+</html>
