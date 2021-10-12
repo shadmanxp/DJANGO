@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .list_dal import *
+from .details_dal import *
 from django.core.paginator import Paginator
 # from django.conf.urls.static import static
 from .models import TblCatalog
@@ -20,7 +21,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def list(request, gender, page):
+def initial_list(request, gender, page):
     try:
         gender_list = get_gender_list()
         category_list = get_category_list(gender)
@@ -54,7 +55,7 @@ def list(request, gender, page):
         }
 
     except TblCatalog.DoesNotExist:
-        raise Http404("Question does not exist")
+        raise Http404("Page not found")
     return HttpResponse(template.render(context, request))
 
 
@@ -92,7 +93,31 @@ def further_list(request, gender, category, page):
         }
 
     except TblCatalog.DoesNotExist:
-        raise Http404("Question does not exist")
+        raise Http404("Page not found")
+    return HttpResponse(template.render(context, request))
+
+
+def details(request, gender, category, art_no, leather_1):
+    try:
+        gender_list = get_gender_list()
+        category_list = get_category_list(gender)
+        list_by_art_no = get_list_by_art_no(art_no)
+        product_details = get_details(art_no, leather_1)
+        color_count = len(list(list_by_art_no))
+        template = loader.get_template('apex/details.html')
+        context = {
+            'gender_list': gender_list,
+            'gender': gender,
+            'category': category,
+            'category_list': category_list,
+            'art_no': art_no,
+            'list_by_art_no': list_by_art_no,
+            'product_details': product_details,
+            'color_count' : color_count,
+            'range': range(0, 5, 1),
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Page not found")
     return HttpResponse(template.render(context, request))
 
 # def detail(request, sl):

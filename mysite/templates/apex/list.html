@@ -10,30 +10,7 @@
 {% include "./header.html" %}
 <div class="container-fluid pt-3">
     <div class="row">
-        <div class="col-lg-2 pe-0" id="side_bar">
-            <div class="navbar-light bg-light bg-white" >
-                <a class="navbar-brand fw-bold me-0 " href="#">
-                    <span class="h2 text-muted ps-1">
-                        {% if gender == "MENS"  %} <i class="fas fa-male fa-sm"></i>
-                        {% elif gender == "KIDS" %} <i class="fas fa-child fa-sm"></i>
-                        {% elif gender == "WOMENS" %}<i class="fas fa-female fa-sm"></i>
-                        {% endif %}
-                        {{ gender }}
-                    </span>
-                </a>
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 pt-2">
-                {% if category_list %}
-                    {% for cat in category_list %}
-                          <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/{{gender}}/{{cat.category}}/pg=1">
-                                <span class="h6 fs-5 text-muted ps-3" style="text-transform: uppercase;"><i class="bi bi-caret-right-fill"></i> {{cat.category}}</span>
-                            </a>
-                          </li>
-                    {% endfor %}
-                {% endif %}
-                </ul>
-            </div>
-        </div>
+        {% include "./sidebar.html" %}
         <div class="col-lg-10 ps-0 ">
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-lg-3 pb-3">
               {%if page_wise_gender_collection %}
@@ -42,7 +19,7 @@
                     <div class="card h-100">
                         <div class="p-2" style="position: relative">
                             <div>
-                            <a href="">
+                            <a href="/{{shoe.gender}}/{{shoe.category}}/a={{shoe.art_no}}&l={{shoe.leather_1}}">
                                 <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
                                 <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                                     <div class="align-self-center card_selection">
@@ -86,7 +63,7 @@
                 <div class="card h-100">
                     <div class="p-2" style="position: relative">
                         <div>
-                        <a href="">
+                        <a href="/{{shoe.gender}}/{{shoe.category}}/a={{shoe.art_no}}&l={{shoe.leather_1}}">
                             <img src="{% static 'images/article/thumbnil/' %}{{shoe.art_no.strip }}_{{shoe.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{shoe.art_no}}">
                             <div class="row text-center m-0 p-0" style="position: absolute;top:0;left:0;z-index:1;bottom:0;right:0;height:100%;letter-spacing:2px;">
                                 <div class="align-self-center card_selection">
@@ -126,7 +103,7 @@
               {% endif %}
             </div>
             {% if gender_collection_pagination %}
-                <ul class="pagination pagination-lg justify-content-center">
+                <ul class="pagination pagination-lg justify-content-center ">
                     {% if not gender_page_has_previous %}
                     <li class="page-item disabled">
                         <a class="page-link">Previous</a>
@@ -142,7 +119,7 @@
                             <a class="page-link" href="/{{gender}}/pg={{pages}}">{{pages}}</a>
                         </li>
                         {% else %}
-                        <li class="page-item">
+                        <li class="page-item ">
                             <a class="page-link" href="/{{gender}}/pg={{pages}}">{{pages}}</a>
                         </li>
                         {% endif %}
@@ -159,7 +136,7 @@
                 </ul>
             {% endif %}
             {% if category_collection_pagination %}
-                <ul class="pagination pagination-lg justify-content-center">
+                <ul class="pagination pagination-lg justify-content-center secondary">
                     {% if not category_page_has_previous %}
                     <li class="page-item disabled">
                         <a class="page-link">Previous</a>

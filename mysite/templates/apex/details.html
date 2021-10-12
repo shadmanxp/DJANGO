@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{{pd_sl}}</title>
+    {% load static %}
+    <script src="{% static 'js/myjs.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/jquery_ez-plus.js' %}"></script>
+</head>
+<body>
+{% include "./header.html" %}
+<div class="container-fluid pt-3 px-3">
+    <div class="row">
+        {% include "./sidebar.html" %}
+        <div class="col-lg-10 ps-0 ">
+        {% if product_details %}
+            {% for detail in product_details %}
+            <div class="row pb-3">
+                <div class="col-md-9 pe-0">
+    <!--                <img src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{detail.art_no}}">-->
+<!--                    <img id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{detail.art_no}}"/>-->
+                    <div class="row justify-content-center px-1">
+                        <img class="img-fluid" id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg"/>
+                    </div>
+                    <div  class="row justify-content-center row-cols-5 row-cols-md-5 g-2 px-1">
+                    {% for i in range %}
+                        <a href="#" class="col white" data-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg">
+                            <img class="img-thumbnail w-100" id="img_01" src="{% static 'images/article/mini/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg"/>
+                        </a>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-3 ps-3 pe-2">
+                    <div class="row row-cols-4 g-1 p-0">
+                        <span class="h6 text-muted ps-1 col-12"><span class="row justify-content-center row-cols-1">AVAILABLE COLORS: {{color_count}}</span></span>
+                        {% if list_by_art_no %}
+                            {% for products in list_by_art_no %}
+                                <div class="col-4">
+                                <a href="/{{products.gender}}/{{products.category}}/a={{products.art_no}}&l={{products.leather_1}}" class="col white">
+                                    <img class="img-thumbnail w-100" src="{% static 'images/article/mini/'%}{{products.art_no.strip }}_{{products.leather_1.strip }}_0.jpg"/>
+                                </a>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <span class="h5 text-muted ps-1 col-12"><span class="row justify-content-center">DETAILS:</span></span>
+                    <div class="row justify-content-center row-cols-1 pt-1 px-2">
+                        <div class="col card p-0" style="width: 21rem;">
+                            <div class="card-header">
+                                <div class="row row-cols-2 align-items-center">
+                                    <h5 class="col text-center text-muted">{{detail.last}}</h5>
+                                    <h5 class="col text-muted text-center border-start">{{detail.art_no}}</h5>
+                                </div>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">SIZE RANGE:</h6><p class="text-muted m-0 ps-2">{{detail.size}}</p>
+                                </li>
+                                {% if detail.leather_1 %}
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">LEATHER 1:</h6><p class="text-muted m-0 ps-2">{{detail.leather_1}}</p>
+                                </li>
+                                {% endif %}
+                                {% if detail.leather_2 %}
+                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">LEATHER 2:</h6><p class="text-muted m-0 ps-2">{{detail.leather_2}}</p>
+                                </li>
+                                {% endif %}
+                                {% if detail.lining_1 %}
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">LINING 1:</h6><p class="text-muted m-0 ps-2">{{detail.lining_1.strip}}</p>
+                                </li>
+                                {% endif %}
+                                {% if detail.lining_2 %}
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">LINING 2:</h6><p class="text-muted m-0 ps-2">{{detail.lining_2.strip}}</p>
+                                </li>
+                                {% endif %}
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">SOCKS:</h6><p class="text-muted m-0 ps-2">{{detail.socks_design}}</p>
+                                </li>
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">SOLE:</h6><p class="text-muted m-0 ps-2">{{detail.sole}}</p>
+                                </li>
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
+                                    <h6 class="text-muted m-0 h6">NOTE:</h6><p class="text-muted m-0 ps-2"></p>
+                                </li>
+                                <li class="list-group-item px-3 d-flex flex-row align-items-center align-self-end">
+                                     <a href="#" class="btn btn-secondary col-12 "><i class="bi bi-cart-plus"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include "./footer.html" %}
+</body>
+</html>
