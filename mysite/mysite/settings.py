@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apex.apps.ApexConfig',
+    # 'crispy_forms',
     # 'django_bootstrap_icons',
     # 'svg',
 
@@ -148,6 +149,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # SVG_DIRS=[
 #     os.path.join(BASE_DIR, 'static/icons'),
 # ] ##add if svg library used

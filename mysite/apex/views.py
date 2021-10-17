@@ -1,11 +1,14 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from django.template import loader
 from .list_dal import *
 from .details_dal import *
 from .accounts_dal import *
+from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator
 # from django.conf.urls.static import static
 from .models import TblCatalog
+from .forms import *
 
 
 def index(request):
@@ -123,17 +126,68 @@ def details(request, gender, category, art_no, leather_1):
 
 
 def signup(request):
-    try:
-        gender_list = get_gender_list()
-        country_list = get_country_list()
-        template = loader.get_template('apex/accounts.html')
+    gender_list = get_gender_list()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            insert_user_info(form_data)
+            # return HttpResponseRedirect('/signup')
+            context = {
+                'gender_list': gender_list,
+                'form': SignUpForm(),
+                'from_data': form_data,
+                'confirmation_message': 'Registration completed!',
+            }
+        elif form.has_error('user_email', code=None):
+            for error in form.errors['user_email']:
+                email_error = error
+                context = {
+                    'gender_list': gender_list,
+                    'form': SignUpForm(),
+                    'email_error': email_error,
+                    'denial_message': 'Registration not complete!',
+                }
+        elif form.has_error('conf_pass', code=None):
+            for error in form.errors['conf_pass']:
+                pass_error = error
+            context = {
+                'gender_list': gender_list,
+                'form': SignUpForm(),
+                'pass_error': pass_error,
+                'denial_message': 'Registration not complete!',
+            }
+    else:
         context = {
             'gender_list': gender_list,
-            'country_list': country_list
+            'form': SignUpForm(),
         }
-    except TblCatalog.DoesNotExist:
-        raise Http404("Page not found")
+    template = loader.get_template('apex/signup.html')
     return HttpResponse(template.render(context, request))
+
+# def signup(request):
+#     try:
+#         gender_list = get_gender_list()
+#         country_list = get_country_list()
+#         # password_validation.validate_password(password, self.instance)
+#         template = loader.get_template('apex/signup.html')
+#         context = {
+#             'gender_list': gender_list,
+#             'country_list': country_list,
+#         }
+#     except TblCatalog.DoesNotExist:
+#         raise Http404("Page not found")
+#     return HttpResponse(template.render(context, request))
+#
+# def user_save(request):
+#
+#     fullName=request.POST["fullName"]
+#     if (len(fullName)<4) :
+#
+#
+#         print (fullName)
+#     pass
+
 
 # def detail(request, sl):
 #

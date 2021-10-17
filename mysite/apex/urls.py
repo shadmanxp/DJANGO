@@ -9,8 +9,11 @@ urlpatterns = [
     path('<gender>/<category>/pg=<page>', views.further_list, name='further_list'),
     path('<gender>/<category>/a=<art_no>&l=<leather_1>', views.details, name='details'),
     path('signup', views.signup, name='signup'),
+    # path('user_save', views.user_save, name='user_save'),
     # path('<int:sl>/cart', views.cart, name='cart'),
     # path('<gender>/gender', views.gender_collections, name='gender_collections'),
     # path('gender', views.gender, name='gender'),
+    # path('test_form', views.test, name='test'),
+
 
 ]

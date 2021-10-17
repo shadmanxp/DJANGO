@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; margin: 0px;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% load static %}
+</head>
+<body style="height: 100%; margin: 0px;">
+{% include "./header.html" %}
+    <div class="container-fluid row align-items-center pt-0" style="height: 86vh;">
+        <div class="col d-flex justify-content-center p-0">
+        <form method="POST" action="signup" class="row col-md-6 g-3 p-3 pb-4 shadow-lg rounded-2" enctype="multipart/form-data">
+            {%csrf_token%}
+            <div class="col-lg-12 text-center mt-2">
+                <label class="form-label h4 mb-1 text-muted">SIGN UP</label>
+            </div>
+            <div class="col-lg-6 ">
+                <label class="form-label h6">Full name</label>
+                {{form.full_name}}
+            </div>
+            <div class="col-lg-6">
+                <label class="form-label h6">Email</label>
+                {{form.user_email}}
+                <span class="text-danger h6 ">{{email_error}}</span>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label h6">Password</label>
+                {{form.user_pass}}
+                <span class="text-danger h6 ">{{pass_error}}</span>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label h6">Repeat Password</label>
+                {{form.conf_pass}}
+                <span class="text-danger h6 ">{{pass_error}}</span>
+            </div>
+             <div class="col-lg-4">
+                <label class="form-label h6">Company</label>
+                 {{form.company}}
+            </div>
+            <div class="col-lg-8">
+                <label  class="form-label h6">Country</label>
+                {{form.country}}
+            </div>
+            <div class="col-lg-4 row  align-items-end">
+               <div class="col d-flex justify-content-end"><button type="submit" class="btn btn-primary">Sign up</button></div>
+            </div>
+            <div class="col-lg-12 text-center mt-2">
+                {% if denial_message %}
+                <p class="form-label h5 mb-1 text-danger">{{denial_message}}</p>
+                {% endif %}
+                {% if confirmation_message %}
+                <p class="form-label h5 mb-1 text-success">{{confirmation_message}}</p>
+                {% endif %}
+            </div>
+        </form>
+<!--            -->
+<!--            -->
+<!--        <form method="POST" id="signup" class="row col-md-8 g-3 p-3 pb-4 shadow-lg rounded-2" action="user_save" enctype="multipart/form-data">-->
+<!--            {%csrf_token%}-->
+<!--            <div class="col-md-12 text-center mt-2">-->
+<!--                <label class="form-label h4 mb-1 text-muted">SIGN UP</label>-->
+<!--            </div>-->
+<!--            <div class="col-md-6 ">-->
+<!--                 <label for="inputName" class="form-label h6">Full name</label>-->
+<!--                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full name" required>-->
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+<!--                <label for="inputEmail" class="form-label h6">Email</label>-->
+<!--                <input type="email" class="form-control" id="inputEmail" placeholder="example@example.com" required>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <label for="inputPassword" class="form-label h6">Password</label>-->
+<!--                <input type="password" class="form-control" id="inputPassword" placeholder="Must be 8 character long" required>-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                <label for="inputRptPassword" class="form-label h6">Repeat Password</label>-->
+<!--                <input type="password" class="form-control" id="inputRptPassword" placeholder="Repeat the password" required>-->
+<!--            </div>-->
+<!--             <div class="col-md-4">-->
+<!--                <label for="inputCompany" class="form-label h6">Company</label>-->
+<!--                <input type="text" class="form-control" id="inputCompany" placeholder="Exact company name" required>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                <label for="inputCountry" class="form-label h6">State</label>-->
+<!--                <select id="inputCountry" class="form-select" required>-->
+<!--                    <option selected>Choose...</option>-->
+<!--                    {% for country in country_list %}-->
+<!--                        <option value="{{country}}">{{country}}</option>-->
+<!--                    {% endfor %}-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="col-md-4 d-flex justify-content-end">-->
+<!--               <button type="submit" class="btn btn-primary">Sign up</button>-->
+<!--            </div>-->
+<!--        </form>-->
+        </div>
+    </div>
+<div>
+{% include "./footer.html" %}
+</div>
+</body>
+</html>
