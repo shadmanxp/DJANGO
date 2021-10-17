@@ -19,6 +19,8 @@ def index(request):
         context = {
             'gender_list': gender_list,
             'featured_products': ft_products,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Question does not exist")
@@ -55,6 +57,8 @@ def initial_list(request, gender, page):
             'gender_page_has_previous': page_has_previous,
             'gender_page_next': page_next,
             'gender_page_previous': page_previous,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
 
         }
 
@@ -94,6 +98,8 @@ def further_list(request, gender, category, page):
             'category_page_has_previous': page_has_previous,
             'category_page_next': page_next,
             'category_page_previous': page_previous,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
         }
 
     except TblCatalog.DoesNotExist:
@@ -119,6 +125,8 @@ def details(request, gender, category, art_no, leather_1):
             'product_details': product_details,
             'color_count': color_count,
             'range': range(0, 5, 1),
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Page not found")
@@ -138,6 +146,8 @@ def signup(request):
                 'form': SignUpForm(),
                 'from_data': form_data,
                 'confirmation_message': 'Registration completed!',
+                'session_full_name': request.session.get('full_name', None),
+                'session_user_email': request.session.get('user_email', None),
             }
         elif form.has_error('user_email', code=None):
             for error in form.errors['user_email']:
@@ -161,9 +171,64 @@ def signup(request):
         context = {
             'gender_list': gender_list,
             'form': SignUpForm(),
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
         }
     template = loader.get_template('apex/signup.html')
     return HttpResponse(template.render(context, request))
+
+
+def signin(request):
+    gender_list = get_gender_list()
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            request.session.modified = True
+            user_detail = get_user_email(form.cleaned_data.get('user_email'))
+            for detail in user_detail:
+                request.session['full_name'] = detail.user_name
+                request.session['user_email'] = detail.user_email
+
+            print(request.session.get('full_name') , request.session.get('user_email'))
+            # return HttpResponseRedirect('/signup')
+            context = {
+                'gender_list': gender_list,
+                'form': SignInForm(),
+                'confirmation_message': 'Login Successful!',
+                'session_full_name': request.session.get('full_name'),
+                'session_user_email': request.session.get('user_email'),
+            }
+            request.session.modified = True
+        elif form.has_error('user_email', code=None):
+            for error in form.errors['user_email']:
+                email_error = error
+                context = {
+                    'gender_list': gender_list,
+                    'form': SignInForm(),
+                    'email_error': email_error,
+                    'denial_message': 'Login attempt fail!',
+                }
+        elif form.has_error('user_pass', code=None):
+            for error in form.errors['user_pass']:
+                pass_error = error
+            context = {
+                'gender_list': gender_list,
+                'form': SignInForm(),
+                'pass_error': pass_error,
+                'denial_message': 'Login attempt fail!',
+            }
+    else:
+        context = {
+            'gender_list': gender_list,
+            'form': SignInForm(),
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
+        }
+    template = loader.get_template('apex/signin.html')
+    return HttpResponse(template.render(context, request))
+
+
 
 # def signup(request):
 #     try:

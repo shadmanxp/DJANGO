@@ -1,5 +1,7 @@
 from .models import TblMember
-from datetime import datetime
+from datetime import date
+from django.db import connections
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -60,16 +62,22 @@ def get_country_list():
 
     return country
 
-def get_user_email(user_email):
 
-    get_user_email_query = "select ROW_NUMBER() OVER (ORDER BY user_email) as sl, user_email from tbl_member where " \
+def get_user_email(user_email):
+    get_user_email_query = "select * from tbl_member where " \
                            "user_email='" + user_email.strip() + "' "
     user_email = TblMember.objects.raw(get_user_email_query)
-    return len(user_email)
+    return user_email
+
 
 def insert_user_info(form_data):
-    created_at = datetime.today().strftime('%Y-%m-%d')
+    created_at = date.today().strftime('%Y-%m-%d')
+    cursor = connections['default'].cursor()
+    insert_query = "insert into tbl_member(user_email,user_name,user_pass,company,country,created_at) values('" \
+                   + str(form_data.get('user_email')) + "','" + str(form_data.get('full_name')) + "','" \
+                   + str(form_data.get('user_pass')) + "','" + str(form_data.get('company')) \
+                   + "','" + str(form_data.get('country')) + "','" \
+                   + created_at + "')"
 
-    insert_query = "insert into tbl_member(user_email,user_name,user_pass,company,country,created_at) values('"+form_data.get('user_email')+"','"+form_data.get('user_name')+"','"+form_data.get('user_pass')+"','"+form_data.get('company')+"','"+form_data.get('country')+"','"+created_at+"')"
-
-    TblMember.objects.raw(insert_query)
+    # TblMember.objects.raw(insert_query)
+    cursor.execute(insert_query)
