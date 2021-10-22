@@ -43,17 +43,30 @@
                 {% endfor %}
                 {% endif %}
                 {% if session_full_name %}
-                    <li class="nav-item  py-2 mx-1">
-                        <a class="nav-link h6 my-0" aria-current="page"  href="#"><span class="success"> {{session_full_name}} </span><i class="bi bi-person-circle"></i></a>
-                    </li>
+<!--                    <li class="nav-item  py-2 mx-1">-->
+<!--                        <a class="nav-link h6 my-0" aria-current="page"  href="#"><span class="success"> {{session_full_name}} </span><i class="bi bi-person-circle"></i></a>-->
+<!--                    </li>-->
+                <li class="nav-item dropdown py-2 mx-1">
+                    <a class="nav-link dropdown-toggle h6 my-0" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="success"> {{session_full_name}} </span><i class="bi bi-person-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Orders</a></li>
+                        <li><a class="dropdown-item" href="#">Change Password</a></li>
+                        <li><a class="dropdown-item" href="/signout">Signout</a></li>
+                    </ul>
+                </li>
                 {% else %}
                      <li class="nav-item  py-2 mx-1">
                         <a class="nav-link h6 my-0" aria-current="page"  href="/signin"><span class="success"> SIGN IN </span><i class="bi bi-key-fill fa-sm"></i></a>
-                    </li>
+                     </li>
                      <li class="nav-item py-2 mx-1">
                         <a class="nav-link h6 my-0" aria-current="page" href="/signup">SIGN UP <i class="fas fa-address-card fa-sm"></i></a>
-                    </li>
+                     </li>
                 {% endif %}
+                <li class="nav-item  py-2 mx-1">
+                    <a class="nav-link h6 my-0" aria-current="page"  href="#"><span class="success"><i class="bi bi-cart-fill"></i></span></a>
+                </li>
             </ul>
         </div>
     </div>

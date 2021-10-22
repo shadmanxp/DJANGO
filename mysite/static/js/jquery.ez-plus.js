@@ -1364,27 +1364,18 @@ if (typeof Object.create !== 'function') {
             }
         },
 
-        swaptheimage: function (smallimage, largeimage) {
+         swaptheimage: function (smallimage, largeimage) {
             var self = this;
             var newImg = new Image();
 
-            if (self.options.loadingIcon && !self.spinner) {
-                var styleAttr = {
-                    background: 'url("' + self.options.loadingIcon + '") no-repeat',
-                    height: self.nzHeight,
-                    width: self.nzWidth,
-                    zIndex: 2000,
-                    position: 'absolute',
-                    backgroundPosition: 'center center',
-                };
-                if (self.options.zoomType === 'inner') {
-                    styleAttr.setProperty('top', 0);
-                }
-                self.spinner = $('<div class="ezp-spinner"></div>')
-                  .css(styleAttr);
+            if (self.options.loadingIcon) {
+                self.spinner = $('<div style="' +
+                    'background: url(\'' + self.options.loadingIcon + '\') no-repeat center;' +
+                    'height:' + self.nzHeight + 'px;' +
+                    'width:' + self.nzWidth + 'px;' +
+                    'z-index: 2000;position: absolute; ' +
+                    'background-position: center center;"></div>');
                 self.$elem.after(self.spinner);
-            } else if (self.spinner) {
-                self.spinner.show();
             }
 
             self.options.onImageSwap(self.$elem);
@@ -1393,9 +1384,7 @@ if (typeof Object.create !== 'function') {
                 self.largeWidth = newImg.width;
                 self.largeHeight = newImg.height;
                 self.zoomImage = largeimage;
-                self.zoomWindow.css({
-                    backgroundSize: '' + self.largeWidth + 'px ' + self.largeHeight + 'px'
-                });
+                self.zoomWindow.css('background-size', self.largeWidth + 'px ' + self.largeHeight + 'px');
 
                 self.swapAction(smallimage, largeimage);
                 return;

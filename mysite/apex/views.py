@@ -71,6 +71,7 @@ def further_list(request, gender, category, page):
     try:
         gender_list = get_gender_list()
         category_list = get_category_list(gender)
+        category = category.strip()
         # category_collection = get_category_collection(gender, category)
         category_collection_pagination = get_category_collection_pagination(gender, category)
         page_wise_category_collection = category_collection_pagination.page(page)
@@ -127,6 +128,7 @@ def details(request, gender, category, art_no, leather_1):
             'range': range(0, 5, 1),
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
+            'cookies' : request
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Page not found")
@@ -185,21 +187,17 @@ def signin(request):
         if form.is_valid():
             form_data = form.cleaned_data
             request.session.modified = True
+            if request.POST.get('previous_page_ref'):
+                previous_page_ref = request.POST.get('previous_page_ref', '/')
+            else:
+                previous_page_ref = '/'
             user_detail = get_user_email(form.cleaned_data.get('user_email'))
             for detail in user_detail:
                 request.session['full_name'] = detail.user_name
                 request.session['user_email'] = detail.user_email
-
-            print(request.session.get('full_name') , request.session.get('user_email'))
-            # return HttpResponseRedirect('/signup')
-            context = {
-                'gender_list': gender_list,
-                'form': SignInForm(),
-                'confirmation_message': 'Login Successful!',
-                'session_full_name': request.session.get('full_name'),
-                'session_user_email': request.session.get('user_email'),
-            }
-            request.session.modified = True
+            # print(request.session.get('full_name') , request.session.get('user_email'))
+            return HttpResponseRedirect(previous_page_ref)
+            # request.session.modified = True
         elif form.has_error('user_email', code=None):
             for error in form.errors['user_email']:
                 email_error = error
@@ -219,16 +217,52 @@ def signin(request):
                 'denial_message': 'Login attempt fail!',
             }
     else:
-        context = {
-            'gender_list': gender_list,
-            'form': SignInForm(),
-            'session_full_name': request.session.get('full_name', None),
-            'session_user_email': request.session.get('user_email', None),
-        }
+        request_previous = request.META.get('HTTP_REFERER')
+        if "signup" not in request_previous and "signin" not in request_previous :
+            context = {
+                'gender_list': gender_list,
+                'form': SignInForm(),
+                'session_full_name': request.session.get('full_name', None),
+                'session_user_email': request.session.get('user_email', None),
+                'previous_page': request_previous,
+            }
+            print(request_previous)
+        else:
+            context = {
+                'gender_list': gender_list,
+                'form': SignInForm(),
+                'session_full_name': request.session.get('full_name', None),
+                'session_user_email': request.session.get('user_email', None),
+            }
+
     template = loader.get_template('apex/signin.html')
     return HttpResponse(template.render(context, request))
 
 
+def signout(request):
+    request.session.modified = True
+    if request.session['user_email']:
+        del request.session['full_name']
+        del request.session['user_email']
+    return HttpResponseRedirect('/')
+
+
+def addCart(request, sl):
+    if request.method == "POST":
+        response = HttpResponse("<h1>Added to cart</h1>")
+        quantity = request.POST.get("quantity", "")
+        note = request.POST.get("note", "")
+        try:
+            value = request.COOKIES['cart_'+sl]
+            split_value = value.split(':')
+            previous_quantity, note = split_value[1], split_value[2]
+            quantity = float(quantity) + float(previous_quantity)
+            response.set_cookie('cart_'+sl, sl+':'+quantity+':'+note)
+        except:
+            response.set_cookie('cart_'+sl, sl+':'+quantity+':'+note)
+    else:
+        pass
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # def signup(request):
 #     try:

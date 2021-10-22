@@ -10,6 +10,8 @@ urlpatterns = [
     path('<gender>/<category>/a=<art_no>&l=<leather_1>', views.details, name='details'),
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
+    path('signout', views.signout, name='signout'),
+    path('addCart/<sl>', views.addCart, name='addCart'),
     # path('user_save', views.user_save, name='user_save'),
     # path('<int:sl>/cart', views.cart, name='cart'),
     # path('<gender>/gender', views.gender_collections, name='gender_collections'),

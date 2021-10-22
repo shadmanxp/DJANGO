@@ -13,7 +13,7 @@ from django.forms import ModelForm
 
 
 def get_country_list():
-    country = [('NULL', 'Select a country....'),
+    country = [(None, 'Select a country....'),
                ('Australia', 'Australia'),
                ('Austria', 'Austria'),
                ('Belgium', 'Belgium'),

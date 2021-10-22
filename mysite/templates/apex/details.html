@@ -5,9 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>{{pd_sl}}</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}" />
     <script src="{% static 'js/myjs.js' %}"></script>
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script src="{% static 'js/jquery_ez-plus.js' %}"></script>
+    <script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/jquery.colorbox-min.js' %}"></script>
+    <script src="{% static 'js/jquery.ez-plus.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+        var quantity=0;
+           $('.quantity-right-plus').click(function(e){
+                e.preventDefault();
+                quantity = parseFloat($('#quantity').val());
+                $('#quantity').val(quantity + 0.5);
+           });
+             $('.quantity-left-minus').click(function(e){
+                e.preventDefault();
+                quantity = parseFloat($('#quantity').val());
+                if(quantity>0.5)
+                { $('#quantity').val(quantity - 0.5); }
+           });
+           $("#zoom_image").ezPlus({
+                container: 'zoomContainer',
+                gallery: 'gallery_zoom',
+                zoomType: 'inner',
+                cursor: 'pointer',
+                galleryActiveClass: "active",
+                imageCrossfade: true,
+                loadingIcon: "images/spinner.gif",
+                scrollZoom: true,
+                imageCrossfade: true,
+           });
+           $(".zoom_image").bind("click", function (e) {
+                var ez = $('#zoom_image').data('ezPlus');
+                ez.closeAll();
+                $.fancyboxPlus(ez.getGalleryList());
+                return false;
+           });
+        });
+    </script>
 </head>
 <body>
 {% include "./header.html" %}
@@ -18,21 +55,31 @@
         {% if product_details %}
             {% for detail in product_details %}
             <div class="row pb-3">
-                <div class="col-md-9 pe-0">
-    <!--                <img src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{detail.art_no}}">-->
-<!--                    <img id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{detail.art_no}}"/>-->
-                    <div class="row justify-content-center px-1">
-                        <img class="img-fluid" id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg"/>
-                    </div>
-                    <div  class="row justify-content-center row-cols-5 row-cols-md-5 g-2 px-1">
-                    {% for i in range %}
-                        <a href="#" class="col white" data-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg">
-                            <img class="img-thumbnail w-100" id="img_01" src="{% static 'images/article/mini/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg"/>
-                        </a>
-                    {% endfor %}
+                <div class="col-lg-9 pe-0">
+                    <div class="row col-12 justify-content-center px-0">
+                        <img style="width: 960px" class="img-fluid px-0" id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg"/>
+                        <div  class="row justify-content-center row-cols-5 row-cols-md-5 g-2 px-1" id="gallery_zoom">
+                            {% for i in range %}
+                            <a class="col white" data-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg">
+                                <img class="img-thumbnail w-100" id="img_{{i}}" src="{% static 'images/article/mini/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg"/>
+                            </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3 ps-3 pe-2">
+<!--                <div class="col-md-9 pe-0">-->
+<!--                    <div class="row justify-content-center px-1">-->
+<!--                        <img class="img-fluid w-75 h-75" id="zoom_image" src="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_0.jpg"/>-->
+<!--                    </div>-->
+<!--                    <div  class="row justify-content-center row-cols-5 row-cols-md-5 g-2 px-1">-->
+<!--                    {% for i in range %}-->
+<!--                        <a href="#" class="col white" data-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg" data-zoom-image="{% static 'images/article/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg">-->
+<!--                            <img class="img-thumbnail w-100" id="img_{{i}}" src="{% static 'images/article/mini/' %}{{detail.art_no.strip }}_{{detail.leather_1.strip }}_{{i}}.jpg"/>-->
+<!--                        </a>-->
+<!--                    {% endfor %}-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="col-lg-3 ps-3 pe-2">
                     <div class="row row-cols-4 g-1 p-0">
                         <span class="h6 text-muted ps-1 col-12"><span class="row justify-content-center row-cols-1">AVAILABLE COLORS: {{color_count}}</span></span>
                         {% if list_by_art_no %}
@@ -84,15 +131,36 @@
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
                                     <h6 class="text-muted m-0 h6">SOLE:</h6><p class="text-muted m-0 ps-2">{{detail.sole.strip}}</p>
                                 </li>
-                                <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">NOTE:</h6><p class="text-muted m-0 ps-2"></p>
-                                </li>
-                                <li class="list-group-item px-3 d-flex flex-row align-items-center align-self-end">
-                                     <a href="#" class="btn btn-secondary col-12 "><i class="bi bi-cart-plus"></i></a>
-                                </li>
+<!--                                <li class="list-group-item px-3 d-flex flex-row align-items-center">-->
+<!--                                    <h6 class="text-muted m-0 h6">NOTE:</h6><p class="text-muted m-0 ps-2"></p>-->
+<!--                                </li>-->
+<!--                                <li class="list-group-item px-3 d-flex flex-row align-items-center align-self-end">-->
+<!--                                    -->
+<!--                                </li>-->
                             </ul>
                         </div>
                     </div>
+                    <form method="POST" action="/addCart/{{detail.sl}}" id="add_to_cart_form" autocomplete="off">
+                        {%csrf_token%}
+                        <div class="form-floating m-3">
+                            <textarea name='note' class="form-control p-4" placeholder="Leave a note here" id="floatingTextarea2" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Notes</label>
+                        </div>
+                        <div class="input-group px-4">
+                            <span class="input-group-btns">
+                                <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
+                                  <i class="bi bi-dash-lg"></i>
+                                </button>
+                            </span>
+                            <input type="number" id="quantity" name="quantity" class="form-control input-number" value="1" min="0.5" max="100" step="any">
+                            <span class="input-group-btn pe-1">
+                                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </span>
+                             <button class="btn btn-secondary rounded">Add to cart <i class="bi bi-cart-plus"></i></button>
+                        </div>
+                    </form>
                 </div>
             {% endfor %}
         {% endif %}
