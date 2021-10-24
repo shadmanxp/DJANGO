@@ -16,37 +16,17 @@
 
         $(document).ready(function(){
         var quantity=0;
-        var minus(sl) = function()
-        {
-            quantity = parseFloat($('#quantity'.concat(sl).val());
-            $('#quantity').concat(sl).val(quantity - 0.5);
-        }
-        var plus(sl) = function()
-        {
-            quantity = parseFloat($('#quantity'.concat(sl).val());
-            $('#quantity').concat(sl).val(quantity + 0.5);
-        }
-<!--        function quantity_right_plus(sl)-->
-<!--            {-->
-<!--                quantity = parseFloat($('#quantity'.concat(sl).val());-->
-<!--                $('#quantity').concat(sl).val(quantity + 0.5);-->
-<!--            }-->
-<!--        function quantity_right_minus(sl)-->
-<!--            {-->
-<!--                quantity = parseFloat($('#quantity'.concat(sl).val());-->
-<!--                $('#quantity').concat(sl).val(quantity - 0.5);-->
-<!--            }-->
-<!--           $('.quantity-right-plus').click(function(e){-->
-<!--                e.preventDefault();-->
-<!--                quantity = parseFloat($('#quantity').val());-->
-<!--                $('#quantity').val(quantity + 0.5);-->
-<!--           });-->
-<!--             $('.quantity-left-minus').click(function(e){-->
-<!--                e.preventDefault();-->
-<!--                quantity = parseFloat($('#quantity').val());-->
-<!--                if(quantity>0.5)-->
-<!--                { $('#quantity').val(quantity - 0.5); }-->
-<!--           });-->
+           $('.quantity-right-plus').click(function(e){
+                e.preventDefault();
+                quantity = parseFloat($('#quantity').val());
+                $('#quantity').val(quantity + 0.5);
+           });
+             $('.quantity-left-minus').click(function(e){
+                e.preventDefault();
+                quantity = parseFloat($('#quantity').val());
+                if(quantity>0.5)
+                { $('#quantity').val(quantity - 0.5); }
+           });
         });
     </script>
 </head>
@@ -116,17 +96,17 @@
                         </div>
                         <div class="input-group px-3">
                             <span class="input-group-btn">
-                                <button type="button" id="{{item_detail.sl}}" class="btn btn-danger btn-number mt-2 quantity_right_minus" onclick="minus({{item_detail.sl}})" data-type="minus" data-field="">
+                                <button type="button" class="quantity_left_minus btn btn-danger btn-number mt-2" data-type="minus" data-field="">
                                   <i class="bi bi-dash-lg"></i>
                                 </button>
                             </span>
-                            <input type="number" id="quantity_{{item_detail.sl}}" name="quantity" class="form-control input-number mt-2" value="{{info.1}}" min="0.5" max="100" step="any">
+                            <input type="number" id="quantity" name="quantity" class="form-control input-number mt-2" value="{{info.1}}" min="0.5" max="100" step="any">
                             <span class="input-group-btn pe-2">
-                                <button type="button" id="{{item_detail.sl}}" class="btn btn-success btn-number mt-2 quantity_right_plus" onclick="plus({{item_detail.sl}})" data-type="plus" data-field="">
+                                <button type="button"  class="quantity_right_plus btn btn-success btn-number mt-2" data-type="plus" data-field="">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
                             </span>
-                             <button type="button" class="btn btn-danger rounded ps-2 mt-2">Remove from cart <i class="bi bi-cart-x"></i></button>
+                             <button class="btn btn-danger rounded ps-2 mt-2">Remove from cart <i class="bi bi-cart-x"></i></button>
                         </div>
                     </form>
                     </div>
