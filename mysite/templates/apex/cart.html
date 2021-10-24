@@ -2,9 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Cart</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}" />
+    <script src="{% static 'js/myjs.js' %}"></script>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/jquery.colorbox-min.js' %}"></script>
+    <script src="{% static 'js/jquery.ez-plus.js' %}"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+        var quantity=0;
+        var minus(sl) = function()
+        {
+            quantity = parseFloat($('#quantity'.concat(sl).val());
+            $('#quantity').concat(sl).val(quantity - 0.5);
+        }
+        var plus(sl) = function()
+        {
+            quantity = parseFloat($('#quantity'.concat(sl).val());
+            $('#quantity').concat(sl).val(quantity + 0.5);
+        }
+<!--        function quantity_right_plus(sl)-->
+<!--            {-->
+<!--                quantity = parseFloat($('#quantity'.concat(sl).val());-->
+<!--                $('#quantity').concat(sl).val(quantity + 0.5);-->
+<!--            }-->
+<!--        function quantity_right_minus(sl)-->
+<!--            {-->
+<!--                quantity = parseFloat($('#quantity'.concat(sl).val());-->
+<!--                $('#quantity').concat(sl).val(quantity - 0.5);-->
+<!--            }-->
+<!--           $('.quantity-right-plus').click(function(e){-->
+<!--                e.preventDefault();-->
+<!--                quantity = parseFloat($('#quantity').val());-->
+<!--                $('#quantity').val(quantity + 0.5);-->
+<!--           });-->
+<!--             $('.quantity-left-minus').click(function(e){-->
+<!--                e.preventDefault();-->
+<!--                quantity = parseFloat($('#quantity').val());-->
+<!--                if(quantity>0.5)-->
+<!--                { $('#quantity').val(quantity - 0.5); }-->
+<!--           });-->
+        });
+    </script>
 </head>
-<body>
-<h1> Cart </h1>
+<body style="height: 100%;">
+{% include "./header.html" %}
+<div class="container-fluid row px-3 m-0">
+    <div class="col-md-9 px-0">
+        <h4 class="text-muted text-center pt-2">CART</h4>
+        {% for items in items_details %}
+            {% for item_detail in items %}
+                <div class="row p-3 m-2 shadow-sm cart_item">
+<!--                    <div class="col-lg-10">-->
+                        <img class="img-responsive p-0 col-lg-4" src="{% static 'images/article/thumbnil/' %}{{item_detail.art_no.strip }}_{{item_detail.leather_1.strip }}_0.jpg" class="card-img-top img-fluid" alt="{{item_detail.art_no}}">
+<!--                    </div>-->
+                    <div class="col-lg-4 p-3">
+                    <h5 class="text-muted m-0">{{item_detail.last.strip}}</h5>
+                    <p class="text-muted m-0">{{item_detail.art_no.strip}}</p>
+                    <h5 class="text-muted m-0">SIZE RANGE</h5>
+                    <p class="text-muted m-0">{{item_detail.size}}</p>
+                    <h5 class="text-muted m-0">DESCRIPTION</h5>
+                    {% if item_detail.leather_1 %}
+                        <p class="text-muted m-0">
+                            <span class="h6">LEATHER 1:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.leather_1.strip}}</span>
+                        </p>
+                    {% endif %}
+                    {% if item_detail.leather_2 %}
+                         <p class="text-muted m-0">
+                            <span class="h6">LEATHER 2:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.leather_2.strip}}</span>
+                        </p>
+                    {% endif %}
+                    {% if item_detail.lining_1 %}
+                        <p class="text-muted m-0">
+                            <span class="h6">LINING 1:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.lining_1.strip}}</span>
+                        </p>
+                    {% endif %}
+                    {% if item_detail.lining_2 %}
+                        <p class="text-muted m-0">
+                            <span class="h6">LINING 2:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.lining_2.strip}}</span>
+                        </p>
+                    {% endif %}
+                         <p class="text-muted m-0">
+                            <span class="h6">SOCKS:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.socks_design.strip}}</span>
+                        </p>
+                        <p class="text-muted m-0">
+                            <span class="h6">SOLE:</span>
+                            <span class="text-muted m-0 ps-2">{{item_detail.sole.strip}}</span>
+                        </p>
+<!--                    {% for each in cart_details %}-->
+<!--                    {% if each.0 == item_detail.sl %}-->
+<!--                        {{each.0}}{{each.1}}{{each.2}}-->
+<!--                    {% endif %}-->
+<!--                    {% endfor %}-->
+                    </div>
+                    <div class="col-lg-4 p-3">
+                    <form method="POST" action="/removeFromCart/{{item_detail.sl}}" id="add_to_cart_form" autocomplete="off">
+                        {%csrf_token%}
+                        {% for info in cart_details %}
+                        {% if info.0 == item_detail.sl %}
+                        <div class="form-floating m-3">
+                            <textarea type="text" name='note' id='note' class="form-control p-4" placeholder="Leave a note here" id="floatingTextarea2" style="height: 100px">{{info.2}}</textarea>
+                            <label for="floatingTextarea2">Notes</label>
+                        </div>
+                        <div class="input-group px-3">
+                            <span class="input-group-btn">
+                                <button type="button" id="{{item_detail.sl}}" class="btn btn-danger btn-number mt-2 quantity_right_minus" onclick="minus({{item_detail.sl}})" data-type="minus" data-field="">
+                                  <i class="bi bi-dash-lg"></i>
+                                </button>
+                            </span>
+                            <input type="number" id="quantity_{{item_detail.sl}}" name="quantity" class="form-control input-number mt-2" value="{{info.1}}" min="0.5" max="100" step="any">
+                            <span class="input-group-btn pe-2">
+                                <button type="button" id="{{item_detail.sl}}" class="btn btn-success btn-number mt-2 quantity_right_plus" onclick="plus({{item_detail.sl}})" data-type="plus" data-field="">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </span>
+                             <button type="button" class="btn btn-danger rounded ps-2 mt-2">Remove from cart <i class="bi bi-cart-x"></i></button>
+                        </div>
+                    </form>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <div class="col-md-3 px-0">
+        <h4 class="text-muted text-center pt-2">Order Summary</h4>
+    </div>
+</div>
+{% include "./footer.html" %}
 </body>
 </html>

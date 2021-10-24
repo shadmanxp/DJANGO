@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.template import loader
 from .list_dal import *
 from .details_dal import *
+from .cart_dal import *
 from .accounts_dal import *
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator
@@ -15,12 +16,14 @@ def index(request):
     try:
         gender_list = get_gender_list()
         ft_products = get_featured_products()
+        cart_items = get_cart_items(request)
         template = loader.get_template('apex/index.html')
         context = {
             'gender_list': gender_list,
             'featured_products': ft_products,
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Question does not exist")
@@ -31,6 +34,7 @@ def initial_list(request, gender, page):
     try:
         gender_list = get_gender_list()
         category_list = get_category_list(gender)
+        cart_items = get_cart_items(request)
         # gender_collection = get_gender_collection(gender)
         gender_collection_pagination = get_gender_collection_pagination(gender)
         page_wise_gender_collection = gender_collection_pagination.page(page)
@@ -59,6 +63,7 @@ def initial_list(request, gender, page):
             'gender_page_previous': page_previous,
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
 
         }
 
@@ -72,6 +77,7 @@ def further_list(request, gender, category, page):
         gender_list = get_gender_list()
         category_list = get_category_list(gender)
         category = category.strip()
+        cart_items = get_cart_items(request)
         # category_collection = get_category_collection(gender, category)
         category_collection_pagination = get_category_collection_pagination(gender, category)
         page_wise_category_collection = category_collection_pagination.page(page)
@@ -101,6 +107,7 @@ def further_list(request, gender, category, page):
             'category_page_previous': page_previous,
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
         }
 
     except TblCatalog.DoesNotExist:
@@ -112,6 +119,7 @@ def details(request, gender, category, art_no, leather_1):
     try:
         gender_list = get_gender_list()
         category_list = get_category_list(gender)
+        cart_items = get_cart_items(request)
         list_by_art_no = get_list_by_art_no(art_no)
         product_details = get_details(art_no, leather_1)
         color_count = len(list(list_by_art_no))
@@ -128,7 +136,7 @@ def details(request, gender, category, art_no, leather_1):
             'range': range(0, 5, 1),
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
-            'cookies' : request
+            'cart_count': len(cart_items),
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Page not found")
@@ -137,6 +145,7 @@ def details(request, gender, category, art_no, leather_1):
 
 def signup(request):
     gender_list = get_gender_list()
+    cart_items = get_cart_items(request)
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -150,6 +159,7 @@ def signup(request):
                 'confirmation_message': 'Registration completed!',
                 'session_full_name': request.session.get('full_name', None),
                 'session_user_email': request.session.get('user_email', None),
+                'cart_count': len(cart_items),
             }
         elif form.has_error('user_email', code=None):
             for error in form.errors['user_email']:
@@ -159,6 +169,7 @@ def signup(request):
                     'form': SignUpForm(),
                     'email_error': email_error,
                     'denial_message': 'Registration not complete!',
+                    'cart_count': len(cart_items),
                 }
         elif form.has_error('conf_pass', code=None):
             for error in form.errors['conf_pass']:
@@ -168,6 +179,7 @@ def signup(request):
                 'form': SignUpForm(),
                 'pass_error': pass_error,
                 'denial_message': 'Registration not complete!',
+                'cart_count': len(cart_items),
             }
     else:
         context = {
@@ -175,6 +187,7 @@ def signup(request):
             'form': SignUpForm(),
             'session_full_name': request.session.get('full_name', None),
             'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
         }
     template = loader.get_template('apex/signup.html')
     return HttpResponse(template.render(context, request))
@@ -182,6 +195,7 @@ def signup(request):
 
 def signin(request):
     gender_list = get_gender_list()
+    cart_items = get_cart_items(request)
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
@@ -206,6 +220,7 @@ def signin(request):
                     'form': SignInForm(),
                     'email_error': email_error,
                     'denial_message': 'Login attempt fail!',
+                    'cart_count': len(cart_items),
                 }
         elif form.has_error('user_pass', code=None):
             for error in form.errors['user_pass']:
@@ -215,16 +230,18 @@ def signin(request):
                 'form': SignInForm(),
                 'pass_error': pass_error,
                 'denial_message': 'Login attempt fail!',
+                'cart_count': len(cart_items),
             }
     else:
         request_previous = request.META.get('HTTP_REFERER')
-        if "signup" not in request_previous and "signin" not in request_previous :
+        if "signup" not in request_previous and "signin" not in request_previous:
             context = {
                 'gender_list': gender_list,
                 'form': SignInForm(),
                 'session_full_name': request.session.get('full_name', None),
                 'session_user_email': request.session.get('user_email', None),
                 'previous_page': request_previous,
+                'cart_count': len(cart_items),
             }
             print(request_previous)
         else:
@@ -233,6 +250,7 @@ def signin(request):
                 'form': SignInForm(),
                 'session_full_name': request.session.get('full_name', None),
                 'session_user_email': request.session.get('user_email', None),
+                'cart_count': len(cart_items),
             }
 
     template = loader.get_template('apex/signin.html')
@@ -247,22 +265,60 @@ def signout(request):
     return HttpResponseRedirect('/')
 
 
-def addCart(request, sl):
+def addToCart(request, sl):
     if request.method == "POST":
-        response = HttpResponse("<h1>Added to cart</h1>")
+        response = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         quantity = request.POST.get("quantity", "")
         note = request.POST.get("note", "")
         try:
-            value = request.COOKIES['cart_'+sl]
+            value = request.COOKIES['cart_' + sl]
             split_value = value.split(':')
-            previous_quantity, note = split_value[1], split_value[2]
+            previous_quantity = split_value[1]
             quantity = float(quantity) + float(previous_quantity)
-            response.set_cookie('cart_'+sl, sl+':'+quantity+':'+note)
         except:
-            response.set_cookie('cart_'+sl, sl+':'+quantity+':'+note)
+            print("Cookie not found")
+        try:
+            cart_items = request.COOKIES['cart_items']
+            if sl not in cart_items:
+                cart_items = cart_items + sl
+                response.set_cookie('cart_items', cart_items + ':')
+        except:
+            print("cookie not found")
+            response.set_cookie('cart_items', sl + ':')
+        response.set_cookie('cart_' + sl.strip(), sl.strip() + ':' + str(quantity) + ':' + note.strip())
     else:
         pass
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return response
+
+
+def removeFromCart(request, sl):
+    if request.method == "POST":
+        response = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        response.delete_cookie('cart_' + sl.strip())
+        cart_items = request.COOKIES['cart_items']
+        cart_items = cart_items.replace(sl+":", "")
+        response.set_cookie('cart_items', cart_items)
+    return response
+
+
+def cart(request):
+    try:
+        gender_list = get_gender_list()
+        cart_items = get_cart_items(request)
+        cart_details = get_cart_details(request, cart_items)
+        items_details = get_cart_items_details(cart_items)
+        template = loader.get_template('apex/cart.html')
+        context = {
+            'gender_list': gender_list,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
+            'items_details': items_details,
+            'cart_details': cart_details,
+            'cart_count': len(cart_items),
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Page not found")
+    return HttpResponse(template.render(context, request))
 
 # def signup(request):
 #     try:

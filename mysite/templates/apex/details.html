@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>{{pd_sl}}</title>
+    <title>{{art_no}}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}" />
     <script src="{% static 'js/myjs.js' %}"></script>
@@ -103,33 +103,39 @@
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SIZE RANGE:</h6><p class="text-muted m-0 ps-2">{{detail.size.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">SIZE RANGE:</h6><p class="text-muted m-0 ps-2">{{detail.size}}</p>
                                 </li>
                                 {% if detail.leather_1 %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LEATHER 1:</h6><p class="text-muted m-0 ps-2">{{detail.leather_1.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">LEATHER 1:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.leather_1.strip}}</p>
                                 </li>
                                 {% endif %}
                                 {% if detail.leather_2 %}
                                  <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LEATHER 2:</h6><p class="text-muted m-0 ps-2">{{detail.leather_2.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">LEATHER 2:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.leather_2.strip}}</p>
                                 </li>
                                 {% endif %}
                                 {% if detail.lining_1 %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LINING 1:</h6><p class="text-muted m-0 ps-2">{{detail.lining_1.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">LINING 1:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.lining_1.strip}}</p>
                                 </li>
                                 {% endif %}
                                 {% if detail.lining_2 %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">LINING 2:</h6><p class="text-muted m-0 ps-2">{{detail.lining_2.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">LINING 2:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.lining_2.strip}}</p>
                                 </li>
                                 {% endif %}
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SOCKS:</h6><p class="text-muted m-0 ps-2">{{detail.socks_design.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">SOCKS:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.socks_design.strip}}</p>
                                 </li>
                                 <li class="list-group-item px-3 d-flex flex-row align-items-center">
-                                    <h6 class="text-muted m-0 h6">SOLE:</h6><p class="text-muted m-0 ps-2">{{detail.sole.strip}}</p>
+                                    <h6 class="text-muted m-0 h6">SOLE:</h6>
+                                    <p class="text-muted m-0 ps-2">{{detail.sole.strip}}</p>
                                 </li>
 <!--                                <li class="list-group-item px-3 d-flex flex-row align-items-center">-->
 <!--                                    <h6 class="text-muted m-0 h6">NOTE:</h6><p class="text-muted m-0 ps-2"></p>-->
@@ -140,13 +146,13 @@
                             </ul>
                         </div>
                     </div>
-                    <form method="POST" action="/addCart/{{detail.sl}}" id="add_to_cart_form" autocomplete="off">
+                    <form method="POST" action="/addToCart/{{detail.sl}}" id="add_to_cart_form" autocomplete="off">
                         {%csrf_token%}
                         <div class="form-floating m-3">
-                            <textarea name='note' class="form-control p-4" placeholder="Leave a note here" id="floatingTextarea2" style="height: 100px"></textarea>
+                            <textarea type="text" name='note' id='note' class="form-control p-4" placeholder="Leave a note here" id="floatingTextarea2" style="height: 100px"></textarea>
                             <label for="floatingTextarea2">Notes</label>
                         </div>
-                        <div class="input-group px-4">
+                        <div class="input-group px-3">
                             <span class="input-group-btns">
                                 <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
                                   <i class="bi bi-dash-lg"></i>
