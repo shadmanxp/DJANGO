@@ -4,10 +4,10 @@ from django.template import loader
 from .list_dal import *
 from .details_dal import *
 from .cart_dal import *
+from .orders_dal import *
 from .accounts_dal import *
 from django.contrib.auth.forms import UserCreationForm
 from django.core.paginator import Paginator
-# from django.conf.urls.static import static
 from .models import TblCatalog
 from .forms import *
 
@@ -252,8 +252,57 @@ def signin(request):
                 'session_user_email': request.session.get('user_email', None),
                 'cart_count': len(cart_items),
             }
-
     template = loader.get_template('apex/signin.html')
+    return HttpResponse(template.render(context, request))
+
+
+def changepassword(request):
+    gender_list = get_gender_list()
+    cart_items = get_cart_items(request)
+    if request.method == 'POST':
+        user_email = request.session.get('user_email', None)
+        form = ChangePassForm(request.POST, user_email = request.session.get('user_email', None))
+        if form.is_valid():
+            form_data = form.cleaned_data
+            change_password(user_email, form_data.get('conf_pass'))
+            context = {
+                'gender_list': gender_list,
+                'form': ChangePassForm(),
+                'session_full_name': request.session.get('full_name', None),
+                'session_user_email': request.session.get('user_email', None),
+                'cart_count': len(cart_items),
+                'confirmation_message': 'Password Changed!',
+            }
+        elif form.has_error('old_pass', code=None):
+            for error in form.errors['old_pass']:
+                old_pass_error = error
+                context = {
+                    'gender_list': gender_list,
+                    'form': ChangePassForm(),
+                    'old_pass_error': old_pass_error,
+                    'denial_message': 'Change password attempt fail!',
+                    'cart_count': len(cart_items),
+                }
+        elif form.has_error('conf_pass', code=None):
+            for error in form.errors['conf_pass']:
+                conf_pass_error = error
+            context = {
+                'gender_list': gender_list,
+                'form': ChangePassForm(),
+                'conf_pass_error': conf_pass_error,
+                'denial_message': 'Change password attempt fail!',
+                'cart_count': len(cart_items),
+            }
+    else:
+        context = {
+            'gender_list': gender_list,
+            'form': ChangePassForm(),
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
+        }
+
+    template = loader.get_template('apex/changepassword.html')
     return HttpResponse(template.render(context, request))
 
 
@@ -292,12 +341,20 @@ def addToCart(request, sl):
 
 
 def removeFromCart(request, sl):
+    # if request.method == "POST":
+    response = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    response.delete_cookie('cart_' + sl.strip())
+    cart_items = request.COOKIES['cart_items']
+    cart_items = cart_items.replace(sl+":", "")
+    response.set_cookie('cart_items', cart_items)
+    return response
+
+def updateCart(request, sl):
     if request.method == "POST":
+        quantity = request.POST.get("quantity_"+sl, "")
+        note = request.POST.get("note_"+sl, "")
         response = HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        response.delete_cookie('cart_' + sl.strip())
-        cart_items = request.COOKIES['cart_items']
-        cart_items = cart_items.replace(sl+":", "")
-        response.set_cookie('cart_items', cart_items)
+        response.set_cookie('cart_' + sl.strip(), sl.strip() + ':' + str(quantity) + ':' + note.strip())
     return response
 
 
@@ -307,6 +364,7 @@ def cart(request):
         cart_items = get_cart_items(request)
         cart_details = get_cart_details(request, cart_items)
         items_details = get_cart_items_details(cart_items)
+        total_pairs = get_total_pairs(request)
         template = loader.get_template('apex/cart.html')
         context = {
             'gender_list': gender_list,
@@ -315,10 +373,54 @@ def cart(request):
             'items_details': items_details,
             'cart_details': cart_details,
             'cart_count': len(cart_items),
+            'total_pairs': total_pairs,
+
         }
     except TblCatalog.DoesNotExist:
         raise Http404("Page not found")
     return HttpResponse(template.render(context, request))
+
+
+def placeOrder(request):
+    try:
+        cart_items = get_cart_items(request)
+        insert_order(request, cart_items)
+        gender_list = get_gender_list()
+        template = loader.get_template('apex/cart.html')
+        context = {
+            'gender_list': gender_list,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
+            'order_message': 'ORDER PLACED',
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Page not found")
+    response = HttpResponse(template.render(context, request))
+    for sl in cart_items:
+        response.delete_cookie('cart_' + sl.strip())
+        response.delete_cookie('cart_items')
+    return response
+
+def viewOrders(request):
+    try:
+        gender_list = get_gender_list()
+        cart_items = get_cart_items(request)
+        orders = get_orders(request)
+        order_item_details = get_order_item_details(orders)
+        template = loader.get_template('apex/orders.html')
+        context = {
+            'gender_list': gender_list,
+            'session_full_name': request.session.get('full_name', None),
+            'session_user_email': request.session.get('user_email', None),
+            'cart_count': len(cart_items),
+            'orders': orders,
+            'order_item_details': order_item_details,
+        }
+    except TblCatalog.DoesNotExist:
+        raise Http404("Page not found")
+    return HttpResponse(template.render(context, request))
+
 
 # def signup(request):
 #     try:

@@ -24,6 +24,12 @@ def get_details_by_sl(sl):
     product_details = TblCatalog.objects.raw(get_details_query)
     return product_details
 
+
+def get_details_by_po_no(po_no):
+    get_details_query = "select * from tbl_catalog where sl='" + po_no + "'"
+    product_details = TblCatalog.objects.raw(get_details_query)
+    return product_details
+
 # def get_details_by_sl(sl):
 #     get_details_query = "SELECT * FROM tbl_catalog WHERE sl IN (1,2,3)"
 #     product_details = TblCatalog.objects.raw(get_details_query)

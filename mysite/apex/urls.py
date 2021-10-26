@@ -1,5 +1,4 @@
 from django.urls import path
-from django.conf.urls.static import static
 
 from . import views
 
@@ -11,9 +10,13 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),
+    path('changepassword', views.changepassword, name='changepassword'),
     path('addToCart/<sl>', views.addToCart, name='addToCart'),
     path('removeFromCart/<sl>', views.removeFromCart, name='removeFromCart'),
+    path('updateCart/<sl>', views.updateCart, name='updatesCart'),
+    path('placeOrder', views.placeOrder, name='placeOrder'),
     path('cart', views.cart, name='cart'),
+    path('orders', views.viewOrders, name='viewOrders'),
     # path('user_save', views.user_save, name='user_save'),
     # path('<int:sl>/cart', views.cart, name='cart'),
     # path('<gender>/gender', views.gender_collections, name='gender_collections'),

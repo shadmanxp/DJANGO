@@ -42,7 +42,9 @@ class SignInForm(forms.Form):
     user_email = forms.EmailField(widget=forms.TextInput(
         attrs={'class': "form-control", 'id': "userEmail", 'placeholder': "example@example.com"}))
     user_pass = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': "form-control", 'id': "userPassword", 'placeholder': "Must be 8 character long"}))
+        attrs={'class': "form-control", 'id': "userPassword", 'placeholder': "Must be 8 character long"}),
+        min_length = 8,
+    )
 
     def clean(self):
         cleaned_data = super(SignInForm, self).clean()
@@ -57,6 +59,39 @@ class SignInForm(forms.Form):
         elif get_user_email(user_email) and user_pass != database_user_pass:
             msg = "Enter the correct password"
             self.add_error('user_pass', msg)
+
+
+class ChangePassForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.user_email = kwargs.pop('user_email', None)
+        super(ChangePassForm, self).__init__(*args, **kwargs)
+
+    old_pass = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': "form-control", 'id': "oldPassword", 'placeholder': "Input previous password"}))
+    new_pass = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': "form-control", 'id': "newPassword", 'placeholder': "Input new password. Must be 8 character long"}),
+        min_length=8,
+    )
+    conf_pass = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': "form-control", 'id': "confPassword", 'placeholder': "Repeat password. Must be 8 character long"}),
+        min_length=8,
+    )
+
+    def clean(self):
+        cleaned_data = super(ChangePassForm, self).clean()
+        old_pass = cleaned_data.get("old_pass")
+        new_pass = cleaned_data.get("new_pass")
+        conf_pass = cleaned_data.get("conf_pass")
+        user_email = self.user_email
+        user_detail = get_user_email(user_email)
+        for detail in user_detail:
+            if old_pass != detail.user_pass:
+                msg = "Password not matched!"
+                self.add_error('old_pass', msg)
+            elif new_pass != conf_pass:
+                msg = "Correctly repeat the password!"
+                self.add_error('conf_pass', msg)
 
     # def password_check(self):
     #     data = self.cleaned_data

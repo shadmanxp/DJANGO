@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% load static %}
+</head>
+<body>
+{% include "./header.html" %}
+{% for order in orders %}
+<div class="table-responsive-xxl">
+<table class="table py-2 shadow">
+{% for items in order_item_details %}
+{% if order.po_no == items.po_no %}
+  <thead>
+    <tr class="table-dark">
+        <th scope="col" colspan="6">ORDER NO: {{order.order_no}}</th>
+        <th scope="col" colspan="3">ORDER DATE: {{order.entry_date}}</th>
+    </tr>
+    <tr>
+        <th scope="col" >IMAGE</th>
+        <th scope="col">LAST</th>
+        <th scope="col">ARTICLE</th>
+        <th scope="col">UPPER</th>
+        <th scope="col">LINING</th>
+        <th scope="col">SOCKS</th>
+        <th scope="col">OUTSOLE</th>
+        <th scope="col">SIZE</th>
+        <th scope="col">QTY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td scope="row" rowspan="2">
+            <a class="order_img" href="/{{items.gender}}/{{items.category}}/a={{items.art_no}}&l={{items.leather_1}}">
+            <img class="img-responsive" src="{% static 'images/article/mini/'%}{{items.art_no.strip }}_{{items.leather_1.strip }}_0.jpg"/>
+            </a>
+        </td>
+        <td>{{items.last.strip}}</td>
+        <td>{{items.art_no.strip}}</td>
+        <td>{{items.leather_1.strip}}</td>
+        <td>{{items.lining_1.strip}}</td>
+        <td>{{items.socks_design.strip}}</td>
+        <td>{{items.sole.strip}}</td>
+        <td>{{items.size}}</td>
+        <td>{{order.qty}}</td>
+    </tr>
+    <tr>
+      <td scope="row" rowspan="8">REMARKS: {{order.note.strip}}</td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+{% endfor %}
+</div>
+{% endfor %}
+{% include "./footer.html" %}
+</body>
+</html>

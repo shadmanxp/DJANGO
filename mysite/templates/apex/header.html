@@ -51,8 +51,8 @@
                         <span class="success"> {{session_full_name}} </span><i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Orders</a></li>
-                        <li><a class="dropdown-item" href="#">Change Password</a></li>
+                        <li><a class="dropdown-item" href="/orders">Orders</a></li>
+                        <li><a class="dropdown-item" href="/changepassword">Change Password</a></li>
                         <li><a class="dropdown-item" href="/signout">Signout</a></li>
                     </ul>
                 </li>
@@ -65,7 +65,7 @@
                      </li>
                 {% endif %}
                 <li class="nav-item  py-2 mx-1">
-                    <a class="nav-link h6 my-0 position-relative" aria-current="page"  href="/cart">
+                    <a class="nav-link h6 my-0 position-relative link_cart" aria-current="page"  href="/cart">
                         <i class="bi bi-cart-fill"></i>
                         {%if cart_count and cart_count is not 0%}
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">

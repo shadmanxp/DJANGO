@@ -16,9 +16,17 @@
 }
 
 .cart_item{
-    transition: all 0.1s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .cart_item:hover {
   background-color: #f2f2f2;
+}
+
+.order_img {
+    transition: all 0.2s ease-in-out;
+}
+
+.order_img:hover {
+    background-color: #f2f2f2;
 }

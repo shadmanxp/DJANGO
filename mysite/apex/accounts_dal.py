@@ -66,8 +66,8 @@ def get_country_list():
 def get_user_email(user_email):
     get_user_email_query = "select * from tbl_member where " \
                            "user_email='" + user_email.strip() + "' "
-    user_email = TblMember.objects.raw(get_user_email_query)
-    return user_email
+    user = TblMember.objects.raw(get_user_email_query)
+    return user
 
 
 def insert_user_info(form_data):
@@ -81,3 +81,9 @@ def insert_user_info(form_data):
 
     # TblMember.objects.raw(insert_query)
     cursor.execute(insert_query)
+
+
+def change_password(user_email, password):
+    cursor = connections['default'].cursor()
+    password_update_query = "update tbl_member set user_pass='"+password+"' where user_email='"+user_email+"'"
+    cursor.execute(password_update_query)
