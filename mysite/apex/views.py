@@ -199,7 +199,7 @@ def signin(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
-            form_data = form.cleaned_data
+            # form_data = form.cleaned_data
             request.session.modified = True
             if request.POST.get('previous_page_ref'):
                 previous_page_ref = request.POST.get('previous_page_ref', '/')
